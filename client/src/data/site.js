@@ -16,7 +16,7 @@ export const site = {
   hours: '',
   instagram: 'https://www.instagram.com/rupak_camatography/?hl=en',
   instagramHandle: '@rupak_camatography',
-  facebook: '', // waiting for the studio's Facebook page link
+  facebook: '', // the studio has no Facebook page; the icon stays hidden while this is empty
 };
 
 export function whatsappLink(message = `Hello ${site.name}, I would like to enquire about a photoshoot.`) {
