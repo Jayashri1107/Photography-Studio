@@ -11,7 +11,7 @@ const ease = [0.22, 1, 0.36, 1];
 /** Sets the page title and meta description. */
 export function Seo({ title, description }) {
   useEffect(() => {
-    document.title = title ? `${title} | ${site.name}` : `${site.name} | Luxury Wedding & Portrait Photography in India`;
+    document.title = title ? `${title} | ${site.name}` : `${site.name} | Wedding & Portrait Photography in Chhatrapati Sambhajinagar`;
     let meta = document.querySelector('meta[name="description"]');
     if (!meta) {
       meta = document.createElement('meta');
@@ -35,10 +35,11 @@ export function SectionHeading({ eyebrow, title, text, align = 'left', className
 }
 
 /** Image hero used on inner pages. */
-export function PageHero({ eyebrow, title, text, image, children }) {
+export function PageHero({ eyebrow, title, text, image, children, compact = false }) {
   const reduce = useReducedMotion();
+  const height = compact ? 'min-h-[42svh] sm:min-h-[48svh]' : 'min-h-[62svh] sm:min-h-[72svh]';
   return (
-    <section className="relative flex min-h-[62svh] items-end overflow-hidden bg-charcoal sm:min-h-[72svh]">
+    <section className={`relative flex ${height} items-end overflow-hidden bg-charcoal`}>
       <motion.div
         className="absolute inset-0"
         initial={reduce ? false : { clipPath: 'inset(8% 8% 8% 8% round 24px)' }}

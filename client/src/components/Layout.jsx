@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'framer-motion';
-import { ArrowUp, ChevronDown, Facebook, Instagram, Mail, MapPin, Menu, Phone, X } from 'lucide-react';
-import { mainNav, site } from '../data/site';
+import { ArrowUp, ChevronDown, Facebook, Instagram, Mail, MapPin, Menu, MessageCircle, Phone, X } from 'lucide-react';
+import { mainNav, site, whatsappLink } from '../data/site';
 import { categories } from '../data/categories';
 
 const ease = [0.22, 1, 0.36, 1];
@@ -10,12 +10,13 @@ const ease = [0.22, 1, 0.36, 1];
 export function Logo({ light = false }) {
   return (
     <Link to="/" className="group flex items-center gap-3" aria-label={`${site.name} — home`}>
-      <span className={`grid h-10 w-10 place-items-center rounded-full border transition-colors duration-500 ${light ? 'border-warm/70' : 'border-olive/50'}`}>
-        <span className={`h-3 w-3 rounded-full transition-all duration-500 group-hover:scale-125 ${light ? 'bg-butter' : 'bg-olive'}`} />
+      {/* The logo file has a white square behind the circle, so it is cropped to a circle here. */}
+      <span className={`block h-12 w-12 shrink-0 overflow-hidden rounded-full shadow-[0_6px_18px_-8px_rgba(0,0,0,0.5)] ring-2 transition-transform duration-500 group-hover:scale-105 sm:h-14 sm:w-14 ${light ? 'ring-warm/60' : 'ring-olive/20'}`}>
+        <img src={site.logo} alt="" width="56" height="56" className="h-full w-full scale-[1.12] object-cover" />
       </span>
       <span className="leading-none">
-        <span className={`block font-serif text-[1.45rem] font-medium tracking-wide transition-colors duration-500 ${light ? 'text-warm' : 'text-charcoal'}`}>Photography</span>
-        <span className={`block text-[0.62rem] font-semibold uppercase tracking-[0.42em] transition-colors duration-500 ${light ? 'text-warm/85' : 'text-olive'}`}>Studio</span>
+        <span className={`block font-serif text-[1.35rem] font-medium tracking-wide transition-colors duration-500 sm:text-[1.5rem] ${light ? 'text-warm' : 'text-charcoal'}`}>Rupak</span>
+        <span className={`block text-[0.6rem] font-semibold uppercase tracking-[0.32em] transition-colors duration-500 ${light ? 'text-warm/85' : 'text-olive'}`}>Camatography</span>
       </span>
     </Link>
   );
@@ -142,7 +143,7 @@ export function Navbar() {
             animate={reduce ? { opacity: 1 } : { clipPath: 'inset(0% 0% 0% 0%)' }}
             exit={reduce ? { opacity: 0 } : { clipPath: 'inset(0% 0% 100% 0%)' }}
             transition={{ duration: 0.6, ease }}
-            className="fixed inset-0 z-[45] overflow-y-auto bg-warm pt-[68px] lg:hidden"
+            className="fixed inset-0 z-[45] overflow-y-auto bg-warm pt-[76px] lg:hidden"
           >
             <motion.ul
               className="container-lux flex flex-col gap-1 pb-10 pt-8"
@@ -227,8 +228,13 @@ export function Footer() {
             <a href={site.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="grid h-11 w-11 place-items-center rounded-full border border-olive/30 text-olive transition hover:bg-olive hover:text-warm">
               <Instagram size={18} />
             </a>
-            <a href={site.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="grid h-11 w-11 place-items-center rounded-full border border-olive/30 text-olive transition hover:bg-olive hover:text-warm">
-              <Facebook size={18} />
+            {site.facebook && (
+              <a href={site.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="grid h-11 w-11 place-items-center rounded-full border border-olive/30 text-olive transition hover:bg-olive hover:text-warm">
+                <Facebook size={18} />
+              </a>
+            )}
+            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="grid h-11 w-11 place-items-center rounded-full border border-olive/30 text-olive transition hover:bg-olive hover:text-warm">
+              <MessageCircle size={18} />
             </a>
           </div>
         </div>
@@ -251,16 +257,23 @@ export function Footer() {
         <div className="col-span-2 lg:col-span-1">
           <h2 className="eyebrow mb-5 font-sans">Visit & Contact</h2>
           <ul className="space-y-4 text-[0.95rem]">
-            <li className="flex gap-3"><Phone size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" /><a href={site.phoneHref} className="hover:text-olive">{site.phone}</a></li>
-            <li className="flex gap-3"><Mail size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" /><a href={`mailto:${site.email}`} className="hover:text-olive">{site.email}</a></li>
-            <li className="flex gap-3"><MapPin size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" /><span>{site.address}</span></li>
+            <li className="flex gap-3">
+              <Phone size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" />
+              <span className="flex flex-col">
+                {site.phones.map((p) => <a key={p.href} href={p.href} className="hover:text-olive">+91 {p.label}</a>)}
+              </span>
+            </li>
+            {site.email && (
+              <li className="flex gap-3"><Mail size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" /><a href={`mailto:${site.email}`} className="break-all hover:text-olive">{site.email}</a></li>
+            )}
+            <li className="flex gap-3"><MapPin size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" /><a href={site.mapsUrl} target="_blank" rel="noopener noreferrer" className="hover:text-olive">{site.address}</a></li>
           </ul>
         </div>
       </div>
       <div className="border-t border-charcoal/10">
         <div className="container-lux flex flex-col items-center justify-between gap-2 py-6 text-sm text-charcoal-soft sm:flex-row">
           <p>© {year} {site.name}. All rights reserved.</p>
-          <p>Crafted with care in India.</p>
+          <p>Chhatrapati Sambhajinagar, Maharashtra</p>
         </div>
       </div>
     </footer>

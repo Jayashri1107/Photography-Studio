@@ -40,7 +40,7 @@
   .img-zoom { @apply transition-transform duration-[1200ms] ease-lux will-change-transform; }
   .group:hover .img-zoom { transform: scale(1.06); }
 
-  .field { @apply w-full rounded-xl border border-charcoal/15 bg-warm px-4 py-3.5 text-base text-charcoal placeholder:text-charcoal/60 transition focus:border-olive focus:outline-none focus:ring-2 focus:ring-olive/20; }
+  .field { @apply w-full rounded-lg border border-charcoal/15 bg-warm px-3 py-2.5 text-[0.95rem] text-charcoal placeholder:text-charcoal/60 transition focus:border-olive focus:outline-none focus:ring-2 focus:ring-olive/20; }
   .field-error { @apply border-red-700/60 focus:border-red-700 focus:ring-red-700/15; }
 }
 

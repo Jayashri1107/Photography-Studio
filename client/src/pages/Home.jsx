@@ -208,7 +208,7 @@ export default function Home() {
   const desktop = useMedia('(min-width: 1024px)');
   return (
     <>
-      <Seo description="Photography Studio — luxury Indian wedding, pre-wedding, maternity, newborn, portrait, event and fashion photography with an editorial, timeless style." />
+      <Seo description="Rupak Camatography — luxury Indian wedding, pre-wedding, maternity, newborn, portrait, event and fashion photography with an editorial, timeless style." />
       {desktop ? <DesktopHero /> : <MobileHero />}
 
       {/* Introduction */}

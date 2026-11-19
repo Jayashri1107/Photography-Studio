@@ -13,7 +13,7 @@ export function validate(v) {
   if (v.name.trim().length < 2) e.name = 'Please enter your full name.';
   const digits = v.phone.replace(/[\s()-]/g, '');
   if (!/^(\+?91)?[6-9]\d{9}$/.test(digits)) e.phone = 'Please enter a valid 10-digit Indian mobile number.';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email.trim())) e.email = 'Please enter a valid email address.';
+  if (v.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email.trim())) e.email = 'Please enter a valid email address.';
   if (!v.category) e.category = 'Please choose a photography category.';
   if (!v.date) e.date = 'Please choose a preferred date.';
   else {
@@ -29,11 +29,11 @@ export function validate(v) {
 function Field({ id, label, error, children, hint }) {
   return (
     <div>
-      <label htmlFor={id} className="mb-2 block text-sm font-semibold text-charcoal">{label}</label>
+      <label htmlFor={id} className="mb-1 block text-xs font-semibold text-charcoal">{label}</label>
       {children}
-      {hint && !error && <p className="mt-1.5 text-xs text-charcoal-soft">{hint}</p>}
+      {hint && !error && <p className="mt-1 text-xs text-charcoal-soft">{hint}</p>}
       {error && (
-        <p id={`${id}-error`} className="mt-1.5 flex items-center gap-1.5 text-sm text-red-800" role="alert">
+        <p id={`${id}-error`} className="mt-1 flex items-center gap-1 text-xs text-red-800" role="alert">
           <AlertCircle size={14} aria-hidden="true" /> {error}
         </p>
       )}
@@ -54,7 +54,7 @@ export default function BookingForm({ defaultCategory = '', defaultPackage = '' 
   };
 
   const catLabel = categories.find((c) => c.slug === v.category)?.title || 'a photoshoot';
-  const waMessage = `Hello Photography Studio, I'm ${v.name || '…'} and I'd like to enquire about ${catLabel}${v.date ? ` on ${v.date}` : ''}${v.location ? ` in ${v.location}` : ''}.${v.message ? ` ${v.message}` : ''}`;
+  const waMessage = `Hello Rupak Camatography, I'm ${v.name || '…'} and I'd like to enquire about ${catLabel}${v.date ? ` on ${v.date}` : ''}${v.location ? ` in ${v.location}` : ''}.${v.message ? ` ${v.message}` : ''}`;
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -99,47 +99,47 @@ export default function BookingForm({ defaultCategory = '', defaultPackage = '' 
           key="ok"
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="rounded-soft bg-sage/60 p-10 text-center"
+          className="rounded-soft bg-sage/60 p-6 text-center sm:p-8"
           role="status"
         >
-          <CheckCircle2 size={48} className="mx-auto text-olive" strokeWidth={1.4} aria-hidden="true" />
-          <h3 className="mt-6 font-serif text-4xl">Thank you — your enquiry has been received.</h3>
-          <p className="mx-auto mt-4 max-w-md text-charcoal-soft">We will contact you within one working day to talk through your shoot and check availability.</p>
-          <button type="button" onClick={() => setStatus('idle')} className="btn-outline mt-8">Send another enquiry</button>
+          <CheckCircle2 size={40} className="mx-auto text-olive" strokeWidth={1.4} aria-hidden="true" />
+          <h3 className="mt-4 font-serif text-2xl sm:text-3xl">Thank you — your enquiry has been received.</h3>
+          <p className="mx-auto mt-3 max-w-md text-sm text-charcoal-soft">We will call you within one working day to check availability.</p>
+          <button type="button" onClick={() => setStatus('idle')} className="btn-outline mt-6">Send another enquiry</button>
         </motion.div>
       ) : (
-        <motion.form key="form" onSubmit={onSubmit} noValidate initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-          <div className="grid gap-6 sm:grid-cols-2">
-            <Field id="name" label="Full name" error={errors.name}>
+        <motion.form key="form" onSubmit={onSubmit} noValidate initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <div className="col-span-2 sm:col-span-1"><Field id="name" label="Full name" error={errors.name}>
               <input id="name" className={cls('name')} value={v.name} onChange={set('name')} autoComplete="name" placeholder="Your full name" {...aria('name')} />
-            </Field>
-            <Field id="phone" label="Mobile number" error={errors.phone}>
-              <input id="phone" type="tel" inputMode="tel" className={cls('phone')} value={v.phone} onChange={set('phone')} autoComplete="tel" placeholder="10-digit mobile number" {...aria('phone')} />
-            </Field>
-            <Field id="email" label="Email address" error={errors.email}>
+            </Field></div>
+            <div className="col-span-2 sm:col-span-1"><Field id="phone" label="Mobile number" error={errors.phone}>
+              <input id="phone" type="tel" inputMode="tel" className={cls('phone')} value={v.phone} onChange={set('phone')} autoComplete="tel" placeholder="10-digit mobile" {...aria('phone')} />
+            </Field></div>
+            <div className="col-span-2"><Field id="email" label="Email (optional)" error={errors.email}>
               <input id="email" type="email" className={cls('email')} value={v.email} onChange={set('email')} autoComplete="email" placeholder="you@example.com" {...aria('email')} />
-            </Field>
-            <Field id="category" label="Photography category" error={errors.category}>
+            </Field></div>
+            <Field id="category" label="Shoot type" error={errors.category}>
               <select id="category" className={cls('category')} value={v.category} onChange={set('category')} {...aria('category')}>
-                <option value="">Choose a category</option>
-                {categories.map((c) => <option key={c.slug} value={c.slug}>{c.title}</option>)}
+                <option value="">Choose</option>
+                {categories.map((c) => <option key={c.slug} value={c.slug}>{c.short}</option>)}
               </select>
             </Field>
             <Field id="date" label="Preferred date" error={errors.date}>
               <input id="date" type="date" min={minDate} className={cls('date')} value={v.date} onChange={set('date')} {...aria('date')} />
             </Field>
-            <Field id="location" label="Preferred location" error={errors.location}>
+            <Field id="location" label="Location" error={errors.location}>
               <input id="location" className={cls('location')} value={v.location} onChange={set('location')} placeholder="City or venue" {...aria('location')} />
             </Field>
-          </div>
           <Field id="package" label="Package (optional)">
             <select id="package" className="field" value={v.package} onChange={set('package')}>
               <option value="">Not sure yet</option>
               {packages.map((p) => <option key={p.name} value={p.name}>{p.name}</option>)}
             </select>
           </Field>
-          <Field id="message" label="Additional message (optional)" error={errors.message} hint="Tell us about the occasion, number of guests or anything else we should know.">
-            <textarea id="message" rows={5} className={cls('message')} value={v.message} onChange={set('message')} placeholder="Your message" {...aria('message')} />
+          </div>
+          <Field id="message" label="Message (optional)" error={errors.message}>
+            <textarea id="message" rows={3} className={cls('message')} value={v.message} onChange={set('message')} placeholder="Occasion, guests, anything we should know" {...aria('message')} />
           </Field>
           {/* Hidden field to catch spam bots */}
           <input type="text" name="website" value={v.website} onChange={set('website')} tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
@@ -151,12 +151,12 @@ export default function BookingForm({ defaultCategory = '', defaultPackage = '' 
             </div>
           )}
 
-          <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-            <button type="submit" className="btn-primary sm:flex-1" disabled={status === 'sending'} aria-busy={status === 'sending'}>
-              {status === 'sending' ? <><Loader2 size={17} className="animate-spin" aria-hidden="true" /> Sending…</> : <><Send size={16} aria-hidden="true" /> Send Booking Enquiry</>}
+          <div className="grid grid-cols-1 gap-3 pt-1 sm:grid-cols-2">
+            <button type="submit" className="btn-primary" disabled={status === 'sending'} aria-busy={status === 'sending'}>
+              {status === 'sending' ? <><Loader2 size={17} className="animate-spin" aria-hidden="true" /> Sending…</> : <><Send size={16} aria-hidden="true" /> Send Enquiry</>}
             </button>
-            <a href={whatsappLink(waMessage)} target="_blank" rel="noopener noreferrer" className="btn-outline sm:flex-1">
-              <MessageCircle size={16} aria-hidden="true" /> Enquire on WhatsApp
+            <a href={whatsappLink(waMessage)} target="_blank" rel="noopener noreferrer" className="btn-outline">
+              <MessageCircle size={16} aria-hidden="true" /> WhatsApp Us
             </a>
           </div>
         </motion.form>

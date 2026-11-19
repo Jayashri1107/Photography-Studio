@@ -22,7 +22,7 @@ export function validateEnquiry(v) {
   const e = {};
   if (v.name.length < 2) e.name = 'Please enter your full name.';
   if (!/^(\+?91)?[6-9]\d{9}$/.test(v.phone.replace(/[\s()-]/g, ''))) e.phone = 'Please enter a valid 10-digit Indian mobile number.';
-  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) e.email = 'Please enter a valid email address.';
+  if (v.email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.email)) e.email = 'Please enter a valid email address.';
   if (!CATEGORIES.includes(v.category)) e.category = 'Please choose a photography category.';
   if (!/^\d{4}-\d{2}-\d{2}$/.test(v.date) || Number.isNaN(Date.parse(v.date))) e.date = 'Please choose a preferred date.';
   else {

@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -7,8 +7,25 @@ import Home from './pages/Home';
 import { About, CategoryPage, Contact, Faq, NotFound, Portfolio, Services, Story } from './pages/Pages';
 import { categories } from './data/categories';
 
+// The browser should not put visitors back where they were on reload; every page starts at the top.
+if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual';
+}
+
 function Page({ children }) {
   const reduce = useReducedMotion();
+  const { hash } = useLocation();
+
+  // Runs the moment the new page appears (after the old one has faded out).
+  // 'instant' overrides the site-wide smooth scrolling, which otherwise gets cut off mid-way.
+  useLayoutEffect(() => {
+    const el = hash && document.getElementById(hash.slice(1));
+    if (el) el.scrollIntoView({ behavior: 'instant' });
+    else window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    const id = requestAnimationFrame(() => ScrollTrigger.refresh());
+    return () => cancelAnimationFrame(id);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
     <motion.main
       id="main"
@@ -32,17 +49,7 @@ export default function App() {
       </a>
       <ScrollProgress />
       <Navbar />
-      <AnimatePresence
-        mode="wait"
-        onExitComplete={() => {
-          // New page: start at the top (or at the #section) and recalculate scroll effects.
-          const id = location.hash.slice(1);
-          const el = id && document.getElementById(id);
-          if (el) el.scrollIntoView();
-          else window.scrollTo(0, 0);
-          requestAnimationFrame(() => ScrollTrigger.refresh());
-        }}
-      >
+      <AnimatePresence mode="wait">
         <Routes location={location} key={location.pathname}>
           <Route path="/" element={<Page><Home /></Page>} />
           <Route path="/about" element={<Page><About /></Page>} />

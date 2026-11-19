@@ -1,5 +1,5 @@
 import { Link, useParams, useSearchParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Check, Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Clock, Instagram, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { Reveal, RevealImage, Stagger, staggerItem, TextReveal } from '../components/Motion';
 import { BookingCTA, PageHero, SectionHeading, Seo } from '../components/Common';
 import { Approach, FaqList, FeaturedProjects, Packages, ServiceCard, Testimonials } from '../components/Sections';
@@ -21,7 +21,7 @@ export function About() {
   ];
   return (
     <>
-      <Seo title="About Us" description="Meet Photography Studio — an Indian photography team creating timeless, editorial images of weddings, families and brands." />
+      <Seo title="About Us" description="Meet Rupak Camatography — an Indian photography team creating timeless, editorial images of weddings, families and brands." />
       <PageHero eyebrow="About us" title="Quietly present, endlessly curious." text="The people and process behind every frame." image={a.windowHands} />
 
       <section className="section">
@@ -85,7 +85,7 @@ export function Portfolio() {
   const initial = categoryBySlug[params.get('category')] ? params.get('category') : 'all';
   return (
     <>
-      <Seo title="Portfolio" description="Browse the Photography Studio portfolio — Indian weddings, pre-wedding, maternity, newborn, portrait, event and fashion photography." />
+      <Seo title="Portfolio" description="Browse the Rupak Camatography portfolio — Indian weddings, pre-wedding, maternity, newborn, portrait, event and fashion photography." />
       <PageHero eyebrow="Portfolio" title="A Glimpse Into Our World." text="Tap any photo to view it full-screen." image={a.maroonEmbrace} />
       <section className="section">
         <div className="container-lux">
@@ -221,38 +221,46 @@ export function Contact() {
   const cat = categoryBySlug[params.get('category')] ? params.get('category') : '';
   const pkg = ['Essential', 'Signature', 'Luxury'].includes(params.get('package')) ? params.get('package') : '';
   const details = [
-    { icon: Phone, label: 'Call us', value: site.phone, href: site.phoneHref },
-    { icon: Mail, label: 'Email', value: site.email, href: `mailto:${site.email}` },
-    { icon: MapPin, label: 'Studio', value: site.address },
-    { icon: Clock, label: 'Hours', value: site.hours },
-  ];
+    ...site.phones.map((p, i) => ({ icon: Phone, label: i === 0 ? 'Call / WhatsApp' : 'Call', value: `+91 ${p.label}`, href: p.href })),
+    site.email && { icon: Mail, label: 'Email', value: site.email, href: `mailto:${site.email}` },
+    { icon: MapPin, label: 'Studio', value: site.address, href: site.mapsUrl, external: true },
+    site.hours && { icon: Clock, label: 'Hours', value: site.hours },
+  ].filter(Boolean);
   return (
     <>
-      <Seo title="Contact & Book a Shoot" description="Book a photoshoot with Photography Studio. Send an enquiry for weddings, pre-wedding, maternity, newborn, portrait, events or fashion photography." />
-      <PageHero eyebrow="Book a shoot" title="Let’s Begin Your Story." text="We reply within one working day." image={a.brideMehendi} />
-      <section className="section">
-        <div className="container-lux grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <Seo title="Contact & Book a Shoot" description="Book a photoshoot with Rupak Camatography in Chhatrapati Sambhajinagar — weddings, pre-wedding, maternity, newborn, portrait, events and fashion." />
+      <PageHero compact eyebrow="Book a shoot" title="Let’s Begin Your Story." text="We reply within one working day." image={a.brideMehendi} />
+      <section className="py-12 sm:py-16 lg:py-20">
+        <div className="container-lux grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-7">
-            <Reveal><p className="eyebrow mb-4">Booking enquiry</p></Reveal>
-            <TextReveal text="Tell us about your shoot." className="h2 mb-10" />
-            <Reveal delay={0.1}><BookingForm defaultCategory={cat} defaultPackage={pkg} /></Reveal>
+            <div className="rounded-soft border border-charcoal/10 bg-warm p-5 shadow-[0_24px_60px_-40px_rgba(65,68,61,0.45)] sm:p-8">
+              <p className="eyebrow mb-2">Booking enquiry</p>
+              <h2 className="mb-6 font-serif text-2xl sm:text-3xl">Tell us about your shoot.</h2>
+              <BookingForm defaultCategory={cat} defaultPackage={pkg} />
+            </div>
           </div>
           <aside className="lg:col-span-5">
-            <div className="rounded-soft bg-sage/45 p-8 sm:p-10 lg:sticky lg:top-28">
-              <h2 className="font-serif text-3xl">Studio details</h2>
-              <ul className="mt-8 space-y-6">
-                {details.map(({ icon: Icon, label, value, href }) => (
-                  <li key={label} className="flex gap-4">
-                    <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-warm text-olive"><Icon size={18} aria-hidden="true" /></span>
-                    <span>
-                      <span className="block text-xs font-semibold uppercase tracking-label text-olive">{label}</span>
-                      {href ? <a href={href} className="hover:text-olive">{value}</a> : <span>{value}</span>}
+            <div className="rounded-soft bg-sage/45 p-6 sm:p-8 lg:sticky lg:top-28">
+              <h2 className="font-serif text-2xl sm:text-3xl">Studio details</h2>
+              <ul className="mt-6 space-y-4">
+                {details.map(({ icon: Icon, label, value, href, external }) => (
+                  <li key={label + value} className="flex items-center gap-3">
+                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-warm text-olive"><Icon size={17} aria-hidden="true" /></span>
+                    <span className="min-w-0">
+                      <span className="block text-[0.68rem] font-semibold uppercase tracking-label text-olive">{label}</span>
+                      {href ? (
+                        <a href={href} className="hover:text-olive" {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{value}</a>
+                      ) : (
+                        <span>{value}</span>
+                      )}
                     </span>
                   </li>
                 ))}
               </ul>
-              <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="btn-primary mt-9 w-full"><MessageCircle size={16} aria-hidden="true" /> Chat on WhatsApp</a>
-              <p className="mt-5 text-xs text-charcoal-soft">{site.placeholderNote}</p>
+              <div className="mt-7 grid grid-cols-2 gap-3">
+                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="btn-primary !px-4"><MessageCircle size={16} aria-hidden="true" /> WhatsApp</a>
+                <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="btn-outline !px-4"><Instagram size={16} aria-hidden="true" /> Instagram</a>
+              </div>
             </div>
           </aside>
         </div>
@@ -273,7 +281,7 @@ export function Faq() {
   const groups = [...new Set(faqs.map((f) => f.group))];
   return (
     <>
-      <Seo title="FAQ" description="Answers to common questions about booking, sessions, delivery and pricing at Photography Studio." />
+      <Seo title="FAQ" description="Answers to common questions about booking, sessions, delivery and pricing at Rupak Camatography." />
       <PageHero eyebrow="FAQ" title="Questions, Answered." text="Everything to know before your shoot." image={a.pastelClose} />
       <section className="section">
         <div className="container-lux grid gap-14 lg:grid-cols-12">
