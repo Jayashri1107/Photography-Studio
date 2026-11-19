@@ -6,7 +6,6 @@ import { imgSrcSet, imgUrl } from '../lib/img';
 import { categories } from '../data/categories';
 
 const ease = [0.22, 1, 0.36, 1];
-const aspect = { tall: 'aspect-[3/4]', wide: 'aspect-[4/3]', square: 'aspect-square' };
 
 export function Lightbox({ items, index, onClose, onIndex }) {
   const closeRef = useRef(null);
@@ -98,7 +97,66 @@ export function Lightbox({ items, index, onClose, onIndex }) {
   );
 }
 
-/** Masonry gallery with category filters and a full-screen lightbox. */
+// Editorial rhythm of six frames: one large feature, two landscape crops, then three taller frames.
+// Every other group mirrors (feature on the right). Photos are cropped around `image.pos`, so faces stay in frame.
+// Phones (6 columns) and desktops (12 columns) each get their own spans.
+const TILE = [
+  { cls: 'col-span-6 row-span-5 md:col-span-7 md:row-span-5', sizes: '(min-width:768px) 60vw, 100vw' },
+  { cls: 'col-span-3 row-span-3 md:col-span-5 md:row-span-3', sizes: '(min-width:768px) 42vw, 50vw' },
+  { cls: 'col-span-3 row-span-3 md:col-span-5 md:row-span-2', sizes: '(min-width:768px) 42vw, 50vw' },
+  { cls: 'col-span-6 row-span-4 md:col-span-4 md:row-span-4', sizes: '(min-width:768px) 34vw, 100vw' },
+  { cls: 'col-span-3 row-span-4 md:col-span-4 md:row-span-4', sizes: '(min-width:768px) 34vw, 50vw' },
+  { cls: 'col-span-3 row-span-4 md:col-span-4 md:row-span-4', sizes: '(min-width:768px) 34vw, 50vw' },
+];
+const MIRROR = 'md:col-start-6';
+
+// When the last group is not complete, stretch its frames so the grid ends without gaps.
+function lastGroupTile(slot, n) {
+  const wide = '(min-width:768px) 60vw, 100vw';
+  if (n === 1) return { cls: 'col-span-6 row-span-5 md:col-span-12 md:row-span-6', sizes: '100vw' };
+  if (n === 2 && slot === 1) return { cls: 'col-span-6 row-span-5 md:col-span-5 md:row-span-5', sizes: wide };
+  if (n === 4 && slot === 3) return { cls: 'col-span-6 row-span-4 md:col-span-12 md:row-span-5', sizes: '100vw' };
+  if (n === 5 && (slot === 3 || slot === 4)) return { cls: 'col-span-6 row-span-4 md:col-span-6 md:row-span-5', sizes: wide };
+  return null;
+}
+
+export function EditorialGrid({ items, onOpen }) {
+  const reduce = useReducedMotion();
+  return (
+    <div className="grid auto-rows-[52px] grid-flow-dense grid-cols-6 gap-2 sm:auto-rows-[72px] sm:gap-3 md:grid-cols-12 lg:auto-rows-[92px] lg:gap-4">
+      {items.map((item, i) => {
+        const slot = i % TILE.length;
+        const group = Math.floor(i / TILE.length);
+        const inLast = items.length - group * TILE.length;
+        const tile = (inLast < TILE.length && lastGroupTile(slot, inLast)) || TILE[slot];
+        const mirror = slot === 0 && group % 2 === 1 ? MIRROR : '';
+        return (
+          <motion.button
+            key={item.id}
+            type="button"
+            onClick={() => onOpen(i)}
+            initial={reduce ? false : { opacity: 0, y: 36, scale: 0.98 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ duration: 0.9, delay: (slot % 3) * 0.08, ease }}
+            className={`group relative overflow-hidden rounded-lg bg-cream text-left sm:rounded-xl ${tile.cls} ${mirror}`}
+            aria-label={`Open photo: ${item.project}, ${item.categoryLabel}`}
+          >
+            <Img image={item.image} className="img-zoom" sizes={tile.sizes} />
+            <span className="absolute inset-0 bg-gradient-to-t from-charcoal/70 via-charcoal/0 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100" />
+            <span className="absolute inset-x-0 bottom-0 flex translate-y-2 flex-col p-4 opacity-0 transition-all duration-500 ease-lux group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100 sm:p-6">
+              <span className="text-[0.65rem] font-semibold uppercase tracking-label text-butter">{item.categoryLabel}</span>
+              <span className="mt-1 font-serif text-lg text-warm sm:text-2xl">{item.project}</span>
+            </span>
+            <Expand size={16} className="absolute right-4 top-4 text-warm opacity-0 transition-opacity duration-500 group-hover:opacity-100" aria-hidden="true" />
+          </motion.button>
+        );
+      })}
+    </div>
+  );
+}
+
+/** Gallery with category filters, an editorial mixed-size layout and a full-screen lightbox. */
 export function MasonryGallery({ items, filters = true, initial = 'all' }) {
   const [active, setActive] = useState(initial);
   const [open, setOpen] = useState(null);
@@ -137,28 +195,8 @@ export function MasonryGallery({ items, filters = true, initial = 'all' }) {
           animate={{ opacity: 1, y: 0 }}
           exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
           transition={{ duration: 0.5, ease }}
-          className="columns-2 gap-3 sm:gap-5 lg:columns-3"
         >
-          {shown.map((item, i) => (
-            <motion.button
-              key={item.id}
-              type="button"
-              onClick={() => setOpen(i)}
-              initial={reduce ? false : { opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-40px' }}
-              transition={{ duration: 0.8, delay: (i % 3) * 0.08, ease }}
-              className={`group relative mb-3 block w-full overflow-hidden rounded-xl sm:mb-5 sm:rounded-soft bg-cream text-left ${aspect[item.image.shape] || aspect.tall}`}
-              aria-label={`Open photo: ${item.project}, ${item.categoryLabel}`}
-            >
-              <Img image={item.image} className="img-zoom" sizes="(min-width:1024px) 33vw, 50vw" width={900} />
-              <span className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-charcoal/75 via-charcoal/10 to-transparent p-6 opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100">
-                <span className="eyebrow text-butter">{item.categoryLabel}</span>
-                <span className="mt-1 font-serif text-lg text-warm sm:text-2xl">{item.project}</span>
-                <Expand size={18} className="absolute right-5 top-5 text-warm" aria-hidden="true" />
-              </span>
-            </motion.button>
-          ))}
+          <EditorialGrid items={shown} onOpen={setOpen} />
         </motion.div>
       </AnimatePresence>
 

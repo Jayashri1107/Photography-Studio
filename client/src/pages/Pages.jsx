@@ -2,7 +2,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, Clock, Instagram, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { Reveal, RevealImage, Stagger, staggerItem, TextReveal } from '../components/Motion';
 import { BookingCTA, PageHero, SectionHeading, Seo } from '../components/Common';
-import { Approach, FaqList, FeaturedProjects, Packages, ServiceCard, Testimonials } from '../components/Sections';
+import { Approach, FaqList, FeaturedProjects, Packages, ServiceCard, ServicesGrid, Testimonials } from '../components/Sections';
 import { MasonryGallery } from '../components/Gallery';
 import BookingForm from '../components/BookingForm';
 import { motion } from 'framer-motion';
@@ -169,9 +169,9 @@ export function CategoryPage({ slug }) {
             <SectionHeading eyebrow="Explore more" title="Other Stories We Tell." />
             <Link to="/services" className="link-underline hidden shrink-0 sm:inline-flex">All services <ArrowRight size={16} aria-hidden="true" /></Link>
           </div>
-          <div className="grid grid-cols-3 gap-3 sm:gap-8">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-5">
             {others.map((o, i) => (
-              <Reveal key={o.slug} delay={i * 0.1}><ServiceCard category={o} /></Reveal>
+              <Reveal key={o.slug} delay={i * 0.1}><ServiceCard category={o} aspect="aspect-[16/9] sm:aspect-[4/5]" sizes="(min-width:640px) 33vw, 100vw" /></Reveal>
             ))}
           </div>
         </div>
@@ -190,12 +190,8 @@ export function Services() {
       <PageHero eyebrow="Services & packages" title="Find the Perfect Experience." text="Seven kinds of stories, three ways to tell them." image={a.blossomOne} />
       <section className="section">
         <div className="container-lux">
-          <SectionHeading eyebrow="What we photograph" title="Stories We Love to Capture." className="mb-16" />
-          <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-8 sm:gap-y-14 lg:grid-cols-3">
-            {categories.map((c, i) => (
-              <Reveal key={c.slug} delay={(i % 3) * 0.1}><ServiceCard category={c} /></Reveal>
-            ))}
-          </div>
+          <SectionHeading eyebrow="What we photograph" title="Stories We Love to Capture." className="mb-10 sm:mb-14" />
+          <ServicesGrid />
         </div>
       </section>
       <section className="section bg-butter/45">
@@ -322,16 +318,19 @@ export function Story() {
   return (
     <>
       <Seo title={`${p.title} — ${p.category}`} description={p.summary} />
-      <PageHero eyebrow={`${p.category} · ${p.location}`} title={p.title} text={p.summary} image={p.cover} />
+      <PageHero eyebrow={p.location ? `${p.category} · ${p.location}` : p.category} title={p.title} text={p.summary} image={p.cover} />
       <section className="section">
         <div className="container-lux max-w-3xl">
           <Link to="/portfolio" className="link-underline mb-10 text-sm"><ArrowLeft size={15} aria-hidden="true" /> Back to portfolio</Link>
           {p.story.map((s, i) => <Reveal key={i} delay={i * 0.1}><p className={i === 0 ? 'lead mt-4 font-serif text-2xl leading-relaxed text-charcoal' : 'mt-6 text-charcoal-soft'}>{s}</p></Reveal>)}
         </div>
-        <div className="container-lux mt-16 grid gap-5 sm:grid-cols-2">
-          {p.gallery.map((g, i) => (
-            <RevealImage key={i} image={g} aspect={i === 0 && p.gallery.length % 2 ? 'aspect-[16/9] sm:col-span-2' : 'aspect-[4/5]'} className={i === 0 && p.gallery.length % 2 ? 'sm:col-span-2' : ''} sizes="(min-width:640px) 50vw, 100vw" />
-          ))}
+        <div className="container-lux mt-12 sm:mt-16">
+          <MasonryGallery
+            filters={false}
+            items={[p.cover, ...p.gallery]
+              .filter((img, i, arr) => arr.indexOf(img) === i)
+              .map((image, i) => ({ id: `${p.slug}-${i}`, category: p.categorySlug, categoryLabel: p.category, project: p.title, image }))}
+          />
         </div>
         <div className="container-lux mt-20 border-t border-charcoal/10 pt-10 text-right">
           <p className="eyebrow">Next story</p>

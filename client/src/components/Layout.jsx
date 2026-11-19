@@ -16,7 +16,7 @@ export function Logo({ light = false }) {
       </span>
       <span className="leading-none">
         <span className={`block font-serif text-[1.35rem] font-medium tracking-wide transition-colors duration-500 sm:text-[1.5rem] ${light ? 'text-warm' : 'text-charcoal'}`}>Rupak</span>
-        <span className={`block text-[0.6rem] font-semibold uppercase tracking-[0.32em] transition-colors duration-500 ${light ? 'text-warm/85' : 'text-olive'}`}>Camatography</span>
+        <span className={`mt-1 block text-[0.6rem] font-semibold uppercase tracking-[0.32em] transition-colors duration-500 ${light ? 'text-warm/85' : 'text-olive'}`}>Camatography</span>
       </span>
     </Link>
   );

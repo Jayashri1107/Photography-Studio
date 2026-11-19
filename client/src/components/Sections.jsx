@@ -12,30 +12,36 @@ const ease = [0.22, 1, 0.36, 1];
 const icons = { BookOpen, Camera, Gem, Palette };
 
 // ---------- Services: category cards (2 columns on phones, asymmetric on desktop) ----------
+// Mixed frames: wide feature cards top and bottom, three tall cards in the middle (desktop);
+// one wide card then two per row on phones.
 const layout = [
-  'lg:col-span-4',
-  'lg:col-span-4 lg:mt-20',
-  'lg:col-span-4 lg:mt-8',
-  'lg:col-span-3',
-  'lg:col-span-3 lg:mt-14',
-  'lg:col-span-3',
-  'lg:col-span-3 lg:mt-14',
+  { wrap: 'col-span-2 lg:col-span-7', aspect: 'aspect-[16/10]', sizes: '(min-width:1024px) 58vw, 100vw' },
+  { wrap: 'col-span-1 lg:col-span-5', aspect: 'aspect-[4/5] lg:aspect-[5/4]', sizes: '(min-width:1024px) 42vw, 50vw' },
+  { wrap: 'col-span-1 lg:col-span-4', aspect: 'aspect-[4/5]', sizes: '(min-width:1024px) 33vw, 50vw' },
+  { wrap: 'col-span-1 lg:col-span-4', aspect: 'aspect-[4/5]', sizes: '(min-width:1024px) 33vw, 50vw' },
+  { wrap: 'col-span-1 lg:col-span-4', aspect: 'aspect-[4/5]', sizes: '(min-width:1024px) 33vw, 50vw' },
+  { wrap: 'col-span-1 lg:col-span-5', aspect: 'aspect-[4/5] lg:aspect-[5/4]', sizes: '(min-width:1024px) 42vw, 50vw' },
+  { wrap: 'col-span-1 lg:col-span-7', aspect: 'aspect-[4/5] lg:aspect-[16/10]', sizes: '(min-width:1024px) 58vw, 50vw' },
 ];
 
-export function ServiceCard({ category, className = 'aspect-[4/5]' }) {
+/** Photo card with the title set on the image. */
+export function ServiceCard({ category, aspect = 'aspect-[4/5]', sizes = '(min-width:1024px) 33vw, 50vw' }) {
   return (
-    <Link to={category.path} className="group block" aria-label={`${category.title} — explore gallery`}>
-      <div className={`relative overflow-hidden rounded-xl bg-cream sm:rounded-soft ${className}`}>
-        <Img image={category.card} className="img-zoom" sizes="(min-width:1024px) 30vw, 50vw" width={900} />
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/45 via-transparent to-transparent opacity-80 transition-opacity duration-700 group-hover:opacity-100" />
-        <span className="absolute right-4 top-4 hidden h-10 w-10 place-items-center rounded-full bg-warm/90 text-olive opacity-0 transition-all duration-500 ease-lux group-hover:rotate-45 group-hover:opacity-100 sm:grid">
-          <ArrowUpRight size={18} aria-hidden="true" />
+    <Link
+      to={category.path}
+      className={`group relative block overflow-hidden rounded-xl bg-cream sm:rounded-soft ${aspect}`}
+      aria-label={`${category.title} — explore gallery`}
+    >
+      <Img image={category.card} className="img-zoom" sizes={sizes} />
+      <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/15 to-transparent transition-opacity duration-700 group-hover:from-charcoal/85" />
+      <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4 sm:p-6">
+        <div className="min-w-0">
+          <p className="hidden text-[0.65rem] font-semibold uppercase tracking-label text-butter sm:block">{category.description}</p>
+          <h3 className="mt-1 font-serif text-xl leading-tight text-warm sm:text-3xl">{category.title.replace(' Photography', '')}</h3>
+        </div>
+        <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full border border-warm/50 text-warm transition-all duration-500 ease-lux group-hover:rotate-45 group-hover:bg-warm group-hover:text-olive sm:h-11 sm:w-11">
+          <ArrowUpRight size={17} aria-hidden="true" />
         </span>
-      </div>
-      <div className="pt-3 sm:pt-5">
-        <h3 className="font-serif text-xl leading-tight sm:text-[1.7rem]">{category.title.replace(' Photography', '')}</h3>
-        <p className="mt-1 hidden text-[0.95rem] text-charcoal-soft sm:block">{category.description}</p>
-        <span className="link-underline mt-2 text-xs sm:mt-3 sm:text-sm">Explore <ArrowRight size={14} aria-hidden="true" /></span>
       </div>
     </Link>
   );
@@ -43,10 +49,10 @@ export function ServiceCard({ category, className = 'aspect-[4/5]' }) {
 
 export function ServicesGrid() {
   return (
-    <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-12 lg:gap-x-8">
+    <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-12 lg:gap-5">
       {categories.map((c, i) => (
-        <Reveal key={c.slug} delay={(i % 2) * 0.08} className={layout[i]}>
-          <ServiceCard category={c} />
+        <Reveal key={c.slug} delay={(i % 3) * 0.08} className={layout[i].wrap}>
+          <ServiceCard category={c} aspect={layout[i].aspect} sizes={layout[i].sizes} />
         </Reveal>
       ))}
     </div>
