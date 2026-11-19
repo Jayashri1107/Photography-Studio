@@ -6,7 +6,7 @@ import { Approach, FaqList, FeaturedProjects, Packages, ServiceCard, Testimonial
 import { MasonryGallery } from '../components/Gallery';
 import BookingForm from '../components/BookingForm';
 import { motion } from 'framer-motion';
-import { images } from '../data/images';
+import { album as a, images } from '../data/images';
 import { categories, categoryBySlug } from '../data/categories';
 import { faqs, interleaved, portfolio, projects } from '../data/content';
 import { site, whatsappLink } from '../data/site';
@@ -14,41 +14,32 @@ import { site, whatsappLink } from '../data/site';
 // ---------------- About ----------------
 export function About() {
   const values = [
-    { title: 'Presence over posing', text: 'We guide gently when it helps and step back when the moment is real.' },
-    { title: 'Respect for tradition', text: 'We learn the order of your rituals and who matters most, so nothing important is missed.' },
-    { title: 'Timeless colour', text: 'True skin tones and soft, natural grading that will look as good in thirty years.' },
-    { title: 'Care after the shoot', text: 'Clear timelines, a private gallery and albums designed to be handed down.' },
+    { title: 'Presence over posing', text: 'Gentle guidance, real moments.' },
+    { title: 'Respect for tradition', text: 'Every ritual, every elder, covered.' },
+    { title: 'Timeless colour', text: 'True skin tones that never date.' },
+    { title: 'Care after the shoot', text: 'Private gallery and heirloom albums.' },
   ];
   return (
     <>
       <Seo title="About Us" description="Meet Photography Studio — an Indian photography team creating timeless, editorial images of weddings, families and brands." />
-      <PageHero eyebrow="About us" title="Quietly present, endlessly curious." text="The people, philosophy and process behind every photograph we make." image={images.cameraHands} />
+      <PageHero eyebrow="About us" title="Quietly present, endlessly curious." text="The people and process behind every frame." image={a.windowHands} />
 
       <section className="section">
-        <div className="container-lux grid gap-14 lg:grid-cols-12 lg:gap-20">
-          <div className="lg:col-span-5">
-            <RevealImage image={images.photographerField} aspect="aspect-[3/4]" sizes="(min-width:1024px) 40vw, 100vw" />
+        <div className="container-lux grid gap-10 lg:grid-cols-12 lg:gap-20">
+          <div className="mx-auto w-full max-w-[340px] sm:max-w-md lg:col-span-5 lg:max-w-none">
+            <RevealImage image={a.maroonCurtain} aspect="aspect-[4/5]" sizes="(min-width:1024px) 40vw, 340px" />
           </div>
           <div className="lg:col-span-7 lg:pt-10">
             <Reveal><p className="eyebrow mb-5">Our story</p></Reveal>
             <TextReveal text="It started with a borrowed camera and a cousin’s wedding." className="h2" />
             <Reveal delay={0.1}>
-              <p className="lead mt-8">
-                What began as photographing family celebrations became a studio devoted to the same idea: that the most valuable photographs are
-                honest ones. The laughter at the haldi. A father adjusting his daughter’s dupatta. The sleepy weight of a newborn.
-              </p>
+              <p className="lead mt-6">The most valuable photographs are honest ones — the laughter at the haldi, a quiet glance, a father’s blessing.</p>
             </Reveal>
-            <Reveal delay={0.2}>
-              <p className="mt-6 text-charcoal-soft">
-                Today we photograph weddings, families and brands across India. We keep our team small on purpose — you will know who is behind the
-                camera, and we will know your story before the day begins. (Studio history placeholder: replace with the owner’s own story.)
-              </p>
-            </Reveal>
-            <Stagger className="mt-12 grid gap-6 sm:grid-cols-2">
+            <Stagger className="mt-8 grid grid-cols-2 gap-3 sm:mt-12 sm:gap-6">
               {values.map((v) => (
-                <motion.div key={v.title} variants={staggerItem} className="rounded-soft bg-sage/45 p-7">
-                  <h3 className="font-serif text-2xl">{v.title}</h3>
-                  <p className="mt-2 text-[0.97rem] text-charcoal-soft">{v.text}</p>
+                <motion.div key={v.title} variants={staggerItem} className="rounded-xl bg-sage/45 p-4 sm:rounded-soft sm:p-7">
+                  <h3 className="font-serif text-lg leading-tight sm:text-2xl">{v.title}</h3>
+                  <p className="mt-1 text-sm text-charcoal-soft sm:mt-2 sm:text-[0.97rem]">{v.text}</p>
                 </motion.div>
               ))}
             </Stagger>
@@ -58,24 +49,24 @@ export function About() {
 
       <section className="section bg-cream/70">
         <div className="container-lux">
-          <SectionHeading align="center" eyebrow="How we work" title="The Art Behind Every Frame." className="mb-16" />
+          <SectionHeading align="center" eyebrow="How we work" title="The Art Behind Every Frame." className="mb-10 sm:mb-14" />
           <Approach />
         </div>
       </section>
 
       <section className="section">
         <div className="container-lux">
-          <SectionHeading eyebrow="The process" title="From first hello to heirloom album." className="mb-14" />
-          <ol className="grid gap-10 md:grid-cols-4">
+          <SectionHeading eyebrow="The process" title="From Hello to Heirloom." className="mb-10 sm:mb-14" />
+          <ol className="grid grid-cols-2 gap-6 sm:gap-10 md:grid-cols-4">
             {[
-              ['Enquiry', 'Share your date, location and ideas through the form or WhatsApp.'],
-              ['Consultation', 'A relaxed call to understand your day, people and priorities.'],
-              ['The shoot', 'We arrive early, plan the light and capture the story as it unfolds.'],
-              ['Delivery', 'A hand-edited private gallery, followed by albums and prints.'],
+              ['Enquiry', 'Form or WhatsApp.'],
+              ['Consultation', 'A relaxed planning call.'],
+              ['The shoot', 'We capture the story.'],
+              ['Delivery', 'Gallery, albums, prints.'],
             ].map(([t, d], i) => (
               <Reveal as="li" key={t} delay={i * 0.1} className="border-t border-olive/30 pt-6">
-                <span className="font-serif text-5xl text-olive/50">0{i + 1}</span>
-                <h3 className="mt-4 font-serif text-3xl">{t}</h3>
+                <span className="font-serif text-3xl text-olive/50 sm:text-5xl">0{i + 1}</span>
+                <h3 className="mt-2 font-serif text-2xl sm:mt-4 sm:text-3xl">{t}</h3>
                 <p className="mt-2 text-charcoal-soft">{d}</p>
               </Reveal>
             ))}
@@ -83,7 +74,7 @@ export function About() {
         </div>
       </section>
 
-      <BookingCTA image={images.coupleBeach} />
+      <BookingCTA image={a.gardenWalk} />
     </>
   );
 }
@@ -95,7 +86,7 @@ export function Portfolio() {
   return (
     <>
       <Seo title="Portfolio" description="Browse the Photography Studio portfolio — Indian weddings, pre-wedding, maternity, newborn, portrait, event and fashion photography." />
-      <PageHero eyebrow="Portfolio" title="A Glimpse Into Our World." text="Filter by story, then open any photograph to view it full-screen." image={images.weddingRitual} />
+      <PageHero eyebrow="Portfolio" title="A Glimpse Into Our World." text="Tap any photo to view it full-screen." image={a.maroonEmbrace} />
       <section className="section">
         <div className="container-lux">
           <MasonryGallery key={initial} items={interleaved(portfolio)} initial={initial} />
@@ -103,7 +94,7 @@ export function Portfolio() {
       </section>
       <section className="section bg-cream/70">
         <div className="container-lux">
-          <SectionHeading eyebrow="Stories" title="Featured Projects." className="mb-20" />
+          <SectionHeading eyebrow="Stories" title="Featured Shoots." className="mb-12 sm:mb-16" />
           <FeaturedProjects items={projects} />
         </div>
       </section>
@@ -127,34 +118,31 @@ export function CategoryPage({ slug }) {
       </PageHero>
 
       <section className="section">
-        <div className="container-lux grid gap-14 lg:grid-cols-12 lg:gap-20">
+        <div className="container-lux grid gap-10 lg:grid-cols-12 lg:gap-20">
           <div className="lg:col-span-6">
-            <Reveal><p className="eyebrow mb-5">The experience</p></Reveal>
+            <Reveal><p className="eyebrow mb-4">The experience</p></Reveal>
             <TextReveal text={`Our ${c.short.toLowerCase()} photography.`} className="h2" />
-            {c.intro.map((p, i) => (
-              <Reveal key={i} delay={0.1 + i * 0.1}><p className={i === 0 ? 'lead mt-8' : 'mt-5 text-charcoal-soft'}>{p}</p></Reveal>
-            ))}
+            <Reveal delay={0.1}><p className="lead mt-5">{c.intro}</p></Reveal>
             <Reveal delay={0.3}>
-              <Link to={`/contact?category=${c.slug}`} className="btn-primary mt-10">Check availability <ArrowRight size={16} aria-hidden="true" /></Link>
+              <Link to={`/contact?category=${c.slug}`} className="btn-primary mt-7">Check availability <ArrowRight size={16} aria-hidden="true" /></Link>
             </Reveal>
           </div>
           <div className="lg:col-span-6">
-            <div className="rounded-soft bg-sage/45 p-8 sm:p-10">
-              <h3 className="font-serif text-3xl">What’s included</h3>
-              <Stagger className="mt-7 grid gap-4 sm:grid-cols-2" gap={0.07}>
+            <div className="rounded-soft bg-sage/45 p-6 sm:p-10">
+              <h3 className="font-serif text-2xl sm:text-3xl">What’s included</h3>
+              <Stagger className="mt-5 grid grid-cols-2 gap-3 text-sm sm:mt-7 sm:gap-4 sm:text-base" gap={0.07}>
                 {c.highlights.map((h) => (
-                  <motion.p key={h} variants={staggerItem} className="flex gap-3"><Check size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" />{h}</motion.p>
+                  <motion.p key={h} variants={staggerItem} className="flex gap-2"><Check size={16} className="mt-1 shrink-0 text-olive" aria-hidden="true" />{h}</motion.p>
                 ))}
               </Stagger>
             </div>
-            <RevealImage image={c.card} aspect="aspect-[16/10]" className="mt-6" sizes="(min-width:1024px) 45vw, 100vw" />
           </div>
         </div>
       </section>
 
       <section id="gallery" className="section scroll-mt-20 bg-cream/70">
         <div className="container-lux">
-          <SectionHeading align="center" eyebrow="Gallery" title={`${c.short} Stories.`} className="mb-14" />
+          <SectionHeading align="center" eyebrow="Gallery" title={`${c.short} Stories.`} className="mb-8 sm:mb-14" />
           <MasonryGallery items={items} filters={false} />
         </div>
       </section>
@@ -162,7 +150,7 @@ export function CategoryPage({ slug }) {
       {related.length > 0 && (
         <section className="section">
           <div className="container-lux">
-            <SectionHeading eyebrow="Featured story" title="Behind the Photographs." className="mb-16" />
+            <SectionHeading eyebrow="Featured story" title="Behind the Photographs." className="mb-10 sm:mb-16" />
             <FeaturedProjects items={related} />
           </div>
         </section>
@@ -170,26 +158,26 @@ export function CategoryPage({ slug }) {
 
       <section className="section bg-butter/40">
         <div className="container-lux">
-          <SectionHeading eyebrow="Packages" title="Choose Your Experience." className="mb-14" />
+          <SectionHeading eyebrow="Packages" title="Choose Your Experience." className="mb-10 sm:mb-14" />
           <Packages />
         </div>
       </section>
 
       <section className="section">
         <div className="container-lux">
-          <div className="mb-14 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
+          <div className="mb-8 flex items-end justify-between gap-6 sm:mb-14">
             <SectionHeading eyebrow="Explore more" title="Other Stories We Tell." />
-            <Link to="/services" className="link-underline">All services <ArrowRight size={16} aria-hidden="true" /></Link>
+            <Link to="/services" className="link-underline hidden shrink-0 sm:inline-flex">All services <ArrowRight size={16} aria-hidden="true" /></Link>
           </div>
-          <div className="grid gap-10 md:grid-cols-3">
+          <div className="grid grid-cols-3 gap-3 sm:gap-8">
             {others.map((o, i) => (
-              <Reveal key={o.slug} delay={i * 0.1}><ServiceCard category={o} className="aspect-[4/5]" /></Reveal>
+              <Reveal key={o.slug} delay={i * 0.1}><ServiceCard category={o} /></Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      <BookingCTA image={c.gallery[0]} />
+      <BookingCTA />
     </>
   );
 }
@@ -199,20 +187,20 @@ export function Services() {
   return (
     <>
       <Seo title="Services & Packages" description="Photography services and packages — weddings, pre-wedding, portraits, maternity, newborn, events and fashion. Essential, Signature and Luxury packages." />
-      <PageHero eyebrow="Services & packages" title="Find the Perfect Experience." text="Seven kinds of stories, three ways to tell them. Every package can be tailored." image={images.coupleStairs} />
+      <PageHero eyebrow="Services & packages" title="Find the Perfect Experience." text="Seven kinds of stories, three ways to tell them." image={a.blossomOne} />
       <section className="section">
         <div className="container-lux">
           <SectionHeading eyebrow="What we photograph" title="Stories We Love to Capture." className="mb-16" />
-          <div className="grid gap-x-10 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-8 sm:gap-y-14 lg:grid-cols-3">
             {categories.map((c, i) => (
-              <Reveal key={c.slug} delay={(i % 3) * 0.1}><ServiceCard category={c} className="aspect-[4/5]" /></Reveal>
+              <Reveal key={c.slug} delay={(i % 3) * 0.1}><ServiceCard category={c} /></Reveal>
             ))}
           </div>
         </div>
       </section>
       <section className="section bg-butter/45">
         <div className="container-lux">
-          <SectionHeading align="center" eyebrow="Packages" title="Three Ways to Begin." text="Choose a starting point — we will tailor coverage, team and albums to your day." className="mb-16" />
+          <SectionHeading align="center" eyebrow="Packages" title="Three Ways to Begin." className="mb-10 sm:mb-14" />
           <Packages />
         </div>
       </section>
@@ -222,7 +210,7 @@ export function Services() {
           <Testimonials />
         </div>
       </section>
-      <BookingCTA image={images.mehendiParty} />
+      <BookingCTA image={a.pastelLook} />
     </>
   );
 }
@@ -241,7 +229,7 @@ export function Contact() {
   return (
     <>
       <Seo title="Contact & Book a Shoot" description="Book a photoshoot with Photography Studio. Send an enquiry for weddings, pre-wedding, maternity, newborn, portrait, events or fashion photography." />
-      <PageHero eyebrow="Book a shoot" title="Let’s Begin Your Story." text="Share a few details and we will reply within one working day." image={images.brideJewels} />
+      <PageHero eyebrow="Book a shoot" title="Let’s Begin Your Story." text="We reply within one working day." image={a.brideMehendi} />
       <section className="section">
         <div className="container-lux grid gap-14 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-7">
@@ -286,7 +274,7 @@ export function Faq() {
   return (
     <>
       <Seo title="FAQ" description="Answers to common questions about booking, sessions, delivery and pricing at Photography Studio." />
-      <PageHero eyebrow="FAQ" title="Questions, Answered." text="Everything you might want to know before your shoot." image={images.weddingFlorals} />
+      <PageHero eyebrow="FAQ" title="Questions, Answered." text="Everything to know before your shoot." image={a.pastelClose} />
       <section className="section">
         <div className="container-lux grid gap-14 lg:grid-cols-12">
           <nav className="lg:col-span-3" aria-label="FAQ topics">
@@ -354,7 +342,7 @@ export function NotFound() {
   return (
     <>
       <Seo title="Page not found" description="The page you were looking for could not be found." />
-      <PageHero eyebrow="404" title="This frame is missing." text="The page you were looking for has moved or never existed." image={images.portraitElder}>
+      <PageHero eyebrow="404" title="This frame is missing." text="The page you were looking for has moved or never existed." image={a.blossomThree}>
         <Link to="/" className="btn-light">Back to home</Link>
         <Link to="/portfolio" className="btn-glass">View portfolio</Link>
       </PageHero>

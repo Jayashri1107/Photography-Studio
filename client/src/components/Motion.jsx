@@ -86,6 +86,8 @@ export function Img({ image, className = '', sizes = '(min-width: 1024px) 50vw, 
       loading={eager ? 'eager' : 'lazy'}
       fetchpriority={eager ? 'high' : undefined}
       decoding="async"
+      referrerPolicy="no-referrer"
+      style={image.pos ? { objectPosition: image.pos } : undefined}
       className={`h-full w-full object-cover ${className}`}
     />
   );
@@ -94,46 +96,52 @@ export function Img({ image, className = '', sizes = '(min-width: 1024px) 50vw, 
 /** Cinematic clip-mask image reveal (+ optional hover zoom). */
 export function RevealImage({ image, className = '', aspect = 'aspect-[4/5]', sizes, zoom = true, direction = 'up' }) {
   const reduce = useReducedMotion();
-  const from = direction === 'left' ? 'inset(0 100% 0 0)' : 'inset(100% 0 0 0)';
+  // Every value needs the same unit (%) or the animation cannot interpolate.
+  const from = direction === 'left' ? 'inset(0% 100% 0% 0%)' : 'inset(100% 0% 0% 0%)';
+  // The "in view" check sits on the outer box, which is never clipped: browsers treat a fully
+  // clipped element as invisible, so a trigger on the clipped box itself would never fire.
   return (
     <motion.div
-      className={`relative overflow-hidden rounded-soft bg-cream ${aspect} ${className}`}
-      initial={reduce ? false : { clipPath: from }}
-      whileInView={{ clipPath: 'inset(0 0% 0 0)' }}
-      viewport={{ once: true, margin: '-80px' }}
-      transition={{ duration: 1.3, ease }}
+      className={`relative overflow-hidden rounded-soft ${aspect} ${className}`}
+      initial={reduce ? false : 'hidden'}
+      whileInView="show"
+      viewport={{ once: true, margin: '-60px' }}
     >
       <motion.div
-        className="h-full w-full"
-        initial={reduce ? false : { scale: 1.18 }}
-        whileInView={{ scale: 1 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 1.8, ease }}
+        className="absolute inset-0 overflow-hidden rounded-[inherit] bg-cream"
+        variants={{ hidden: { clipPath: from }, show: { clipPath: 'inset(0% 0% 0% 0%)', transition: { duration: 1.3, ease } } }}
       >
-        <Img image={image} sizes={sizes} className={zoom ? 'img-zoom' : ''} />
+        <motion.div
+          className="h-full w-full"
+          variants={{ hidden: { scale: 1.18 }, show: { scale: 1, transition: { duration: 1.8, ease } } }}
+        >
+          <Img image={image} sizes={sizes} className={zoom ? 'img-zoom' : ''} />
+        </motion.div>
       </motion.div>
     </motion.div>
   );
 }
 
-/** GSAP ScrollTrigger parallax for a background image. Desktop only; off for reduced motion. */
+/** GSAP ScrollTrigger parallax. Gentler on phones; off for reduced motion. */
 export function useParallax(strength = 12) {
   const ref = useRef(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     const mm = gsap.matchMedia();
-    mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
+    const run = (s) => () => {
       gsap.fromTo(
         el,
-        { yPercent: -strength },
+        { yPercent: -s },
         {
-          yPercent: strength,
+          yPercent: s,
           ease: 'none',
-          scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: true },
+          scrollTrigger: { trigger: el.parentElement, start: 'top bottom', end: 'bottom top', scrub: 0.6 },
         }
       );
-    });
+    };
+    mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', run(strength));
+    mm.add('(max-width: 767px) and (prefers-reduced-motion: no-preference)', run(strength / 2));
     return () => mm.revert();
   }, [strength]);
   return ref;

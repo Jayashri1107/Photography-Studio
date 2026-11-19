@@ -11,31 +11,31 @@ import { site } from '../data/site';
 const ease = [0.22, 1, 0.36, 1];
 const icons = { BookOpen, Camera, Gem, Palette };
 
-// ---------- Services: asymmetric category cards ----------
+// ---------- Services: category cards (2 columns on phones, asymmetric on desktop) ----------
 const layout = [
-  'md:col-span-7 aspect-[4/3]',
-  'md:col-span-5 aspect-[4/5] md:mt-24',
-  'md:col-span-4 aspect-[3/4]',
-  'md:col-span-4 aspect-[3/4] md:mt-16',
-  'md:col-span-4 aspect-[3/4]',
-  'md:col-span-5 aspect-[4/5]',
-  'md:col-span-7 aspect-[4/3] md:mt-20',
+  'lg:col-span-4',
+  'lg:col-span-4 lg:mt-20',
+  'lg:col-span-4 lg:mt-8',
+  'lg:col-span-3',
+  'lg:col-span-3 lg:mt-14',
+  'lg:col-span-3',
+  'lg:col-span-3 lg:mt-14',
 ];
 
 export function ServiceCard({ category, className = 'aspect-[4/5]' }) {
   return (
     <Link to={category.path} className="group block" aria-label={`${category.title} — explore gallery`}>
-      <div className={`relative overflow-hidden rounded-soft bg-cream ${className.replace(/md:\S+/g, '')}`}>
-        <Img image={category.card} className="img-zoom" sizes="(min-width:768px) 50vw, 100vw" width={1000} />
+      <div className={`relative overflow-hidden rounded-xl bg-cream sm:rounded-soft ${className}`}>
+        <Img image={category.card} className="img-zoom" sizes="(min-width:1024px) 30vw, 50vw" width={900} />
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal/45 via-transparent to-transparent opacity-80 transition-opacity duration-700 group-hover:opacity-100" />
-        <span className="absolute right-5 top-5 grid h-11 w-11 place-items-center rounded-full bg-warm/90 text-olive opacity-0 transition-all duration-500 ease-lux group-hover:rotate-45 group-hover:opacity-100">
+        <span className="absolute right-4 top-4 hidden h-10 w-10 place-items-center rounded-full bg-warm/90 text-olive opacity-0 transition-all duration-500 ease-lux group-hover:rotate-45 group-hover:opacity-100 sm:grid">
           <ArrowUpRight size={18} aria-hidden="true" />
         </span>
       </div>
-      <div className="pt-6">
-        <h3 className="font-serif text-3xl">{category.title}</h3>
-        <p className="mt-2 max-w-md text-[0.97rem] text-charcoal-soft">{category.description}</p>
-        <span className="link-underline mt-4 text-sm">Explore Gallery <ArrowRight size={15} aria-hidden="true" /></span>
+      <div className="pt-3 sm:pt-5">
+        <h3 className="font-serif text-xl leading-tight sm:text-[1.7rem]">{category.title.replace(' Photography', '')}</h3>
+        <p className="mt-1 hidden text-[0.95rem] text-charcoal-soft sm:block">{category.description}</p>
+        <span className="link-underline mt-2 text-xs sm:mt-3 sm:text-sm">Explore <ArrowRight size={14} aria-hidden="true" /></span>
       </div>
     </Link>
   );
@@ -43,10 +43,10 @@ export function ServiceCard({ category, className = 'aspect-[4/5]' }) {
 
 export function ServicesGrid() {
   return (
-    <div className="grid gap-x-10 gap-y-16 md:grid-cols-12">
+    <div className="grid grid-cols-2 gap-x-4 gap-y-8 sm:gap-x-6 sm:gap-y-12 lg:grid-cols-12 lg:gap-x-8">
       {categories.map((c, i) => (
-        <Reveal key={c.slug} delay={(i % 2) * 0.1} className={layout[i].split(' ').filter((x) => x.startsWith('md:')).join(' ')}>
-          <ServiceCard category={c} className={layout[i]} />
+        <Reveal key={c.slug} delay={(i % 2) * 0.08} className={layout[i]}>
+          <ServiceCard category={c} />
         </Reveal>
       ))}
     </div>
@@ -57,14 +57,14 @@ export function ServicesGrid() {
 export function Approach() {
   const reduce = useReducedMotion();
   return (
-    <Stagger className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4" gap={0.14}>
+    <Stagger className="grid grid-cols-2 gap-3 sm:gap-6 lg:grid-cols-4" gap={0.14}>
       {approach.map((a, i) => {
         const Icon = icons[a.icon];
         return (
-          <motion.div key={a.title} variants={staggerItem} className="group rounded-soft border border-charcoal/8 bg-warm p-8 transition-all duration-700 ease-lux hover:-translate-y-1 hover:border-olive/25 hover:shadow-[0_30px_60px_-30px_rgba(89,102,77,0.35)]">
+          <motion.div key={a.title} variants={staggerItem} className="group rounded-soft border border-charcoal/8 bg-warm p-5 transition-all duration-700 sm:p-8 ease-lux hover:-translate-y-1 hover:border-olive/25 hover:shadow-[0_30px_60px_-30px_rgba(89,102,77,0.35)]">
             <div className="flex items-center justify-between">
               <motion.span
-                className="grid h-14 w-14 place-items-center rounded-full bg-sage text-olive transition-colors duration-500 group-hover:bg-olive group-hover:text-warm"
+                className="grid h-11 w-11 place-items-center rounded-full bg-sage sm:h-14 sm:w-14 text-olive transition-colors duration-500 group-hover:bg-olive group-hover:text-warm"
                 initial={reduce ? false : { rotate: -30, scale: 0.6 }}
                 whileInView={{ rotate: 0, scale: 1 }}
                 viewport={{ once: true }}
@@ -72,10 +72,10 @@ export function Approach() {
               >
                 <Icon size={24} strokeWidth={1.5} aria-hidden="true" />
               </motion.span>
-              <span className="font-serif text-2xl text-olive/45">0{i + 1}</span>
+              <span className="font-serif text-xl text-olive/45 sm:text-2xl">0{i + 1}</span>
             </div>
-            <h3 className="mt-8 font-serif text-[1.7rem]">{a.title}</h3>
-            <p className="mt-3 text-[0.97rem] text-charcoal-soft">{a.text}</p>
+            <h3 className="mt-5 font-serif text-xl leading-tight sm:mt-8 sm:text-[1.7rem]">{a.title}</h3>
+            <p className="mt-2 text-sm text-charcoal-soft sm:text-[0.97rem]">{a.text}</p>
           </motion.div>
         );
       })}
@@ -86,29 +86,24 @@ export function Approach() {
 // ---------- Featured projects (editorial) ----------
 export function FeaturedProjects({ items = projects.slice(0, 3) }) {
   return (
-    <div className="space-y-24 sm:space-y-32">
+    <div className="space-y-16 sm:space-y-28">
       {items.map((p, i) => {
         const flip = i % 2 === 1;
         return (
-          <article key={p.slug} className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
+          <article key={p.slug} className="grid items-center gap-6 sm:gap-10 lg:grid-cols-12 lg:gap-16">
             <div className={`lg:col-span-7 ${flip ? 'lg:order-2' : ''}`}>
               <Link to={`/stories/${p.slug}`} className="group block" aria-label={`View story: ${p.title}`}>
-                <RevealImage image={p.cover} aspect="aspect-[4/3]" direction={flip ? 'left' : 'up'} sizes="(min-width:1024px) 58vw, 100vw" />
+                <RevealImage image={p.cover} aspect="aspect-[4/3] lg:aspect-[5/4]" direction={flip ? 'left' : 'up'} sizes="(min-width:1024px) 58vw, 100vw" />
               </Link>
             </div>
             <div className={`lg:col-span-5 ${flip ? 'lg:order-1' : ''}`}>
               <Reveal>
                 <p className="eyebrow">{p.category}</p>
-                <h3 className="mt-4 font-serif text-4xl sm:text-5xl">{p.title}</h3>
-                <p className="mt-4 flex items-center gap-2 text-sm text-charcoal-soft"><MapPin size={15} className="text-olive" aria-hidden="true" /> {p.location}</p>
-                <p className="lead mt-6">{p.summary}</p>
-                <Link to={`/stories/${p.slug}`} className="link-underline mt-8">View Story <ArrowRight size={16} aria-hidden="true" /></Link>
+                <h3 className="mt-3 font-serif text-3xl sm:text-5xl">{p.title}</h3>
+                {p.location && <p className="mt-3 flex items-center gap-2 text-sm text-charcoal-soft"><MapPin size={15} className="text-olive" aria-hidden="true" /> {p.location}</p>}
+                <p className="lead mt-3 sm:mt-5">{p.summary}</p>
+                <Link to={`/stories/${p.slug}`} className="link-underline mt-5 sm:mt-8">View Story <ArrowRight size={16} aria-hidden="true" /></Link>
               </Reveal>
-              <div className="mt-10 hidden grid-cols-2 gap-4 sm:grid">
-                {p.gallery.slice(0, 2).map((g, k) => (
-                  <RevealImage key={k} image={g} aspect="aspect-square" sizes="20vw" />
-                ))}
-              </div>
             </div>
           </article>
         );
@@ -126,22 +121,22 @@ export function Packages() {
           <motion.div
             key={p.name}
             variants={staggerItem}
-            className={`relative flex flex-col rounded-soft p-9 transition-transform duration-700 ease-lux hover:-translate-y-1.5 ${
+            className={`relative flex flex-col rounded-soft p-7 transition-transform sm:p-9 duration-700 ease-lux hover:-translate-y-1.5 ${
               p.featured ? 'bg-sage shadow-[0_40px_80px_-40px_rgba(89,102,77,0.5)] lg:-mt-4 lg:pb-12' : 'border border-charcoal/10 bg-warm'
             }`}
           >
             {p.featured && <span className="absolute -top-3.5 left-9 rounded-full bg-butter px-4 py-1.5 text-xs font-semibold uppercase tracking-label text-olive">Most loved</span>}
-            <h3 className="font-serif text-4xl">{p.name}</h3>
+            <h3 className="font-serif text-3xl sm:text-4xl">{p.name}</h3>
             <p className="mt-2 text-[0.95rem] text-charcoal-soft">{p.ideal}</p>
-            <p className="mt-7 border-y border-charcoal/10 py-5 font-serif text-2xl italic text-olive">{p.price}</p>
-            <ul className="mt-7 flex-1 space-y-3.5">
+            <p className="mt-5 border-y border-charcoal/10 py-4 font-serif text-xl sm:mt-7 sm:py-5 sm:text-2xl italic text-olive">{p.price}</p>
+            <ul className="mt-5 flex-1 space-y-3 sm:mt-7">
               {p.inclusions.map((inc) => (
                 <li key={inc} className="flex gap-3 text-[0.97rem]">
                   <Check size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" /> {inc}
                 </li>
               ))}
             </ul>
-            <Link to={`/contact?package=${p.name}`} className={`${p.featured ? 'btn-primary' : 'btn-outline'} mt-9 w-full`}>
+            <Link to={`/contact?package=${p.name}`} className={`${p.featured ? 'btn-primary' : 'btn-outline'} mt-7 w-full sm:mt-9`}>
               Enquire about {p.name}
             </Link>
           </motion.div>
@@ -170,23 +165,23 @@ export function Testimonials() {
   }, [paused, reduce, i]);
 
   return (
-    <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-16" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
-      <div className="relative aspect-[4/5] overflow-hidden rounded-soft bg-cream lg:col-span-5">
+    <div className="grid items-center gap-6 sm:gap-10 lg:grid-cols-12 lg:gap-16" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)} onFocus={() => setPaused(true)} onBlur={() => setPaused(false)}>
+      <div className="relative aspect-[4/3] overflow-hidden rounded-soft bg-cream sm:aspect-[16/10] lg:col-span-5 lg:aspect-[4/5]">
         <AnimatePresence initial={false}>
           <motion.div
             key={i}
             className="absolute inset-0"
-            initial={reduce ? { opacity: 0 } : { clipPath: dir > 0 ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)' }}
-            animate={reduce ? { opacity: 1 } : { clipPath: 'inset(0 0% 0 0%)' }}
+            initial={reduce ? { opacity: 0 } : { clipPath: dir > 0 ? 'inset(0% 0% 0% 100%)' : 'inset(0% 100% 0% 0%)' }}
+            animate={reduce ? { opacity: 1 } : { clipPath: 'inset(0% 0% 0% 0%)' }}
             exit={{ opacity: 1 }}
             transition={{ duration: 1, ease }}
           >
-            <Img image={t.image} sizes="(min-width:1024px) 40vw, 100vw" width={900} />
+            <Img image={t.image} sizes="(min-width:1024px) 40vw, 100vw" />
           </motion.div>
         </AnimatePresence>
       </div>
       <div className="lg:col-span-7" aria-live="polite">
-        <Quote size={44} className="text-olive/35" strokeWidth={1.2} aria-hidden="true" />
+        <Quote size={36} className="text-olive/35" strokeWidth={1.2} aria-hidden="true" />
         <AnimatePresence mode="wait">
           <motion.figure
             key={i}
@@ -195,7 +190,7 @@ export function Testimonials() {
             exit={reduce ? { opacity: 0 } : { opacity: 0, y: -16 }}
             transition={{ duration: 0.6, ease }}
           >
-            <blockquote className="mt-6 font-serif text-3xl leading-snug text-charcoal sm:text-[2.6rem]">“{t.quote}”</blockquote>
+            <blockquote className="mt-4 font-serif text-[1.6rem] leading-snug text-charcoal sm:mt-6 sm:text-[2.4rem]">“{t.quote}”</blockquote>
             <figcaption className="mt-8 flex flex-wrap items-center gap-4">
               <span className="font-semibold">{t.name}</span>
               <span className="text-sm text-charcoal-soft">{t.event}</span>
@@ -228,7 +223,7 @@ export function Testimonials() {
 export function InstagramGallery() {
   return (
     <>
-      <Stagger className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6" gap={0.08}>
+      <Stagger className="grid grid-cols-3 gap-2 sm:gap-3 lg:grid-cols-6" gap={0.08}>
         {instagramGrid.map((img, k) => (
           <motion.a
             key={k}
@@ -271,7 +266,7 @@ export function FaqList({ items = faqs }) {
                 aria-expanded={on}
                 aria-controls={`faq-${k}`}
                 id={`faq-btn-${k}`}
-                className="flex w-full items-center justify-between gap-6 py-6 text-left font-serif text-2xl text-charcoal transition-colors hover:text-olive"
+                className="flex w-full items-center justify-between gap-6 py-6 text-left font-serif text-xl text-charcoal transition-colors sm:text-2xl hover:text-olive"
               >
                 {f.q}
                 <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border transition-all duration-500 ${on ? 'rotate-45 border-olive bg-olive text-warm' : 'border-charcoal/15'}`}>

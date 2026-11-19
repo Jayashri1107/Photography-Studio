@@ -6,7 +6,7 @@
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   body {
     @apply bg-warm font-sans text-charcoal antialiased;
-    font-size: 1.0625rem;
+    font-size: 1rem;
     line-height: 1.7;
   }
   h1, h2, h3, h4 { @apply font-serif font-medium text-charcoal; line-height: 1.08; letter-spacing: -0.01em; }
@@ -17,14 +17,14 @@
 
 @layer components {
   .container-lux { @apply mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-12; }
-  .section { @apply py-20 sm:py-28 lg:py-32; }
+  .section { @apply py-16 sm:py-24 lg:py-28; }
   .eyebrow { @apply text-xs font-semibold uppercase tracking-label text-olive; }
   .display { @apply font-serif text-[2.6rem] leading-[1.02] sm:text-6xl lg:text-7xl; }
-  .h2 { @apply font-serif text-4xl sm:text-5xl lg:text-[3.6rem]; }
-  .lead { @apply text-lg leading-relaxed text-charcoal-soft; }
+  .h2 { @apply font-serif text-[2.1rem] sm:text-5xl lg:text-[3.4rem]; }
+  .lead { @apply text-base leading-relaxed text-charcoal-soft sm:text-lg; }
 
   .btn {
-    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full px-7 py-3.5 text-sm font-semibold tracking-wide transition-all duration-500 ease-lux;
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-full px-6 py-3 text-sm sm:px-7 sm:py-3.5 font-semibold tracking-wide transition-all duration-500 ease-lux;
   }
   .btn-primary { @apply btn bg-olive text-warm hover:bg-olive-deep hover:shadow-[0_12px_30px_-12px_rgba(89,102,77,0.7)] hover:-translate-y-0.5; }
   .btn-outline { @apply btn border border-olive/40 text-olive hover:border-olive hover:bg-olive hover:text-warm; }

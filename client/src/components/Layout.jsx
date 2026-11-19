@@ -138,9 +138,9 @@ export function Navbar() {
         {open && (
           <motion.div
             id="mobile-menu"
-            initial={reduce ? { opacity: 0 } : { clipPath: 'inset(0 0 100% 0)' }}
-            animate={reduce ? { opacity: 1 } : { clipPath: 'inset(0 0 0% 0)' }}
-            exit={reduce ? { opacity: 0 } : { clipPath: 'inset(0 0 100% 0)' }}
+            initial={reduce ? { opacity: 0 } : { clipPath: 'inset(0% 0% 100% 0%)' }}
+            animate={reduce ? { opacity: 1 } : { clipPath: 'inset(0% 0% 0% 0%)' }}
+            exit={reduce ? { opacity: 0 } : { clipPath: 'inset(0% 0% 100% 0%)' }}
             transition={{ duration: 0.6, ease }}
             className="fixed inset-0 z-[45] overflow-y-auto bg-warm pt-[68px] lg:hidden"
           >
@@ -218,11 +218,11 @@ export function BackToTop() {
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="bg-sage/45 pt-20 text-charcoal">
-      <div className="container-lux grid gap-12 pb-16 md:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1.3fr]">
-        <div>
+    <footer className="bg-sage/45 pt-14 text-charcoal sm:pt-20">
+      <div className="container-lux grid grid-cols-2 gap-x-6 gap-y-10 pb-12 sm:pb-16 lg:grid-cols-[1.4fr_1fr_1.2fr_1.3fr] lg:gap-12">
+        <div className="col-span-2 lg:col-span-1">
           <Logo />
-          <p className="mt-6 max-w-sm text-[0.95rem] leading-relaxed text-charcoal-soft">{site.intro}</p>
+          <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-charcoal-soft">{site.intro}</p>
           <div className="mt-6 flex gap-3">
             <a href={site.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="grid h-11 w-11 place-items-center rounded-full border border-olive/30 text-olive transition hover:bg-olive hover:text-warm">
               <Instagram size={18} />
@@ -244,18 +244,17 @@ export function Footer() {
           <h2 className="eyebrow mb-5 font-sans">Photography</h2>
           <ul className="space-y-3 text-[0.95rem]">
             {categories.map((c) => (
-              <li key={c.slug}><Link to={c.path} className="transition-colors hover:text-olive">{c.title}</Link></li>
+              <li key={c.slug}><Link to={c.path} className="transition-colors hover:text-olive">{c.short}</Link></li>
             ))}
           </ul>
         </div>
-        <div>
+        <div className="col-span-2 lg:col-span-1">
           <h2 className="eyebrow mb-5 font-sans">Visit & Contact</h2>
           <ul className="space-y-4 text-[0.95rem]">
             <li className="flex gap-3"><Phone size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" /><a href={site.phoneHref} className="hover:text-olive">{site.phone}</a></li>
             <li className="flex gap-3"><Mail size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" /><a href={`mailto:${site.email}`} className="hover:text-olive">{site.email}</a></li>
             <li className="flex gap-3"><MapPin size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" /><span>{site.address}</span></li>
           </ul>
-          <p className="mt-5 text-xs text-charcoal-soft">{site.placeholderNote}</p>
         </div>
       </div>
       <div className="border-t border-charcoal/10">

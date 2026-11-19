@@ -1,7 +1,43 @@
-// The image library. Replace `unsplash` ids with the studio's own photos
-// (or add a `cloudinary` public id) — every page reads from here.
+// The image library — every page reads from here.
+// `album` photos are the studio's own work, served from the shared Google Photos album
+// at the exact width each screen needs. `unsplash` photos are stand-ins for categories
+// the studio has not shared yet (maternity, newborn, events, fashion).
 // `shape`: tall | wide | square — used by the masonry gallery.
+// `pos`: which part of the photo to keep when it is cropped (CSS object-position).
 const I = (unsplash, alt, shape = 'tall') => ({ unsplash, alt, shape });
+const GP = 'https://lh3.googleusercontent.com/pw/';
+const G = (id, alt, pos = 'center 30%', shape = 'tall') => ({ gp: GP + id, alt, pos, shape });
+
+export const album = {
+  // Red bridal shoot
+  brideMehendi: G('AP1GczOYczJbHLJuefY2Xugr_9b5T-zl1XawExz-582Ut_bdLqy6zD_RhHR2d2Brt0IiCIzbjfKDay2n98C3gW14n1T7NL1o85kd02q89cXwGsFysJVkUiU', 'Smiling bride in red with gold jewellery showing her mehendi', 'center 25%'),
+  redGarden: G('AP1GczM7q73RUgDG6Iobt7EEUAwOVjxUFjPqmdYC1zuxZwJGh_Q87de0EfWN4m980jxwNePOyD3oU6OGwERF0XZ4nGj4dU2N5jkdUfZeEc-S-dLYBTHVrtE', 'Bride and groom in red and white standing against a green garden wall', 'center 55%'),
+  // Indoor maroon shoot
+  maroonWindow: G('AP1GczMXtLOZoxzcIXy5m0PJmsOx0r0el_w18Y6TyYOyTt22lOP__wHmIXsvweOg6uzKgdZa5PHPTW9AicuyYXABCxqh287Z_A86s7YWyMJPaLZKsjkm12k', 'Bride in a maroon lehenga and groom beside a window', 'center 30%'),
+  maroonCurtain: G('AP1GczOZAvsRfvc7BRMqcIa8ti2DoVX6qAHL2RV55MdggN7QdPlSLALAnfsyuVW_mCcmLVVDPIPOsmdh9nerQPnnOpi_CqIlYPurMheKyekOFmpELRvlQDM', 'Couple in wedding attire standing by warm-lit curtains', 'center 45%'),
+  maroonEmbrace: G('AP1GczMn0i5uZ6aWtraj8c24m22Ac4KfMHBfcCKB74cqJkZhn0IZPa4XSlaK7jGiShtQIzZlpGG4ZwmoNAZ2D4kfxS2RzIahL3YebUx8BAEIiUSPEgw6zKU', 'Groom in an ivory sherwani holding his bride in maroon', 'center 30%'),
+  maroonSmile: G('AP1GczNCrX-EpX90O3d_fVYWFiOBPkCB0sIPeWKuQ-2fl10Gk2FWuAxMD1s06f6wXbtEqlTxrNtGXgPygVuj37nm9-Hy_-2JBtswtaETxUxyEUsNMx73_rg', 'Bride and groom smiling at each other in front of curtains', 'center 28%'),
+  maroonClose: G('AP1GczOw5D7k_6k4-eiv8R8IsQLt68lH_HYl0fF3QJFq9irUlLqQzRatv9nVOiQ8C0s3_vPAkVTJA8n2h3H9zEyOgJP726WGFYFQZo7peJPB3e6-kd9WltI', 'Couple leaning in close in soft warm light', 'center 35%'),
+  windowLight: G('AP1GczNXPiaKBD1MLVwJEcm3V2CccxHjU13NBluACfjXWBaWiWLzNTdVlxQO91QXYY4Ngq6f_PFyS5_IzepWauAFQWLMRbNMdRJMOrwzSE7IDfLhjn1PHmk', 'Couple facing each other in front of a bright window', 'center 50%'),
+  windowLight2: G('AP1GczOXPMvqzE-GWFg_NVmdag2p78ReUCSdJSSM4J-6Z2zZiO3XkFIRXaXFpwgIMqmyM6-BixTfeLPn06tPnB8xxRzzmgAJOnTzxljsCKk9DFQq5sJhIbU', 'Couple silhouetted against a tall window between dark curtains', 'center 50%'),
+  windowHands: G('AP1GczMgoA97woXeeX6jypf1yXj_6cXyGOVkxj9rdLEPWAxtVkOa_WMQZvzLe2GRwQUZf-gpQRKQA8arPaY_m0ajoF9jkeIO8KHzEVuq-h9-r-L53fWeCeY', 'Bride and groom holding hands and smiling by a window', 'center 35%'),
+  monoKiss: G('AP1GczMTHWPqzwVN4wCOcsQhcT3obI6SLn5e3ogIk8CgjeCU1-4IjkyjHUm9J4I5XT7381jzIJdYnsav-Mbab6lnL3Yq7WPaIc6wti47IzLijQFuMXWBARM', 'Black and white portrait of the groom kissing the bride’s forehead', 'center 30%'),
+  foreheadKiss: G('AP1GczMYgdQWOS1ZdMX_74c40kSPxXl-kFoHmMzauSEvanjWENMsjaqRxJkZC9tRRZkU-qKutsLE-R6pgz4OL80YcJGxJHL5vs9E22efdzWyXqjMqbmcSOU', 'Groom kissing his bride’s forehead in soft window light', 'center 30%'),
+  windowSoft: G('AP1GczPhE8PogoHBHJ1vpjNepWR3etdIOLay00JXGZ1MkYthN1sV2i8hwkSf5Fn_UdsdyVFVLLD5qyO5EZYx41ytx3yirlS-uhnOTZ8PVPV7WVFfQ_VCmQQ', 'Couple standing together by a window with sheer curtains', 'center 45%'),
+  // Pastel garden shoot
+  pastelStand: G('AP1GczPtxwjxmmu4TDK716jjzq8Lm3ZtpbOTCPrmzrMw5Htw5KhZmT9nqoSVZYcwGxzOy-tK9QF-b7gcDhrFx1oO_-YMhlRJDzFpwX-TsxVC_m8Rl4okX4Y', 'Couple in pastel outfits standing apart in a garden courtyard', 'center 50%'),
+  pastelTogether: G('AP1GczPzHaPyvXRj2Q4DmXupsW-IWYz4QGK9B4Gl1pmFR-s1kd9WgX-EcEYCGkMS69jsCHaSaqA35ABuHZpuNb555PVhEHp3RNcHs2DnbnVXSZFvVbSDK7M', 'Couple in pastel attire standing together under yellow blossoms', 'center 45%'),
+  pastelClose: G('AP1GczPHxiL2FqKV9JI3jy2Jmv-G1ZiLg2oz7phjeUSccNC_QmsHyTNHdcD2G80qaOTAPKt6eXY0pk-kecFIamVTAP1jrQ1IRt3YQhTD60zNuTVvAtqEZuw', 'Groom in a safa and bride in blush smiling under yellow flowers', 'center 35%'),
+  pastelFull: G('AP1GczPoOxCSRc966TaZH0IT-x3dXA3XZuvGOjPYltqJJKcYjCwgimwI7EuwUgcN3UFLbYYXQeZ-3QaJ_7rjgJIWaYPXcU4e4hLcv0M_9rQ4eW0mdtF4DJI', 'Full-length portrait of the couple beneath a flowering tree', 'center 55%'),
+  pastelLook: G('AP1GczN5Q12maOq5myEadY5du4iuULTeI9wopfdGWZt7oYGKqlUjquv19lXZbY2B9Rs8WdVMn9TESGbMqBJZLkSB4NrBJauetfbI1SVRAmecjb2VmUXlt3s', 'Couple looking at each other in a garden of yellow blossoms', 'center 45%'),
+  blossomOne: G('AP1GczMAGdqqsPkS6wmb6MztSDI0dPw5MBQiIroYeBDuJ0NxUOzqoFoh55B9XS6sEjG-wM-7JyO1gdIBnPApCt3NJSx8g-Jy1LxkZnKuR-PgxyoUh2aRST0', 'Couple posing among yellow blossoms in pastel clothes', 'center 45%'),
+  blossomTwo: G('AP1GczO6dDEE62k0Fal4qLliCCx1VRe3CQNnMmpTa8_cfFDf5KhzUC3-qTVweB0cek146gRVQFQbLR6opL4Cwka3bESH__kXLcU9XN17QZwTXWdov7FnbJk', 'Bride and groom smiling together in front of a flowering hedge', 'center 40%'),
+  blossomThree: G('AP1GczP7ROKslpmwd2PTgZieL_vbe5u-1ddgbOIw3fbShoOTRNna4MGH3PJlkhEtkZtQ2tIXK-vL9RtsB09o7b9qPRdnma14Gmb0RCtWpaZaxs-Gwn0ydtU', 'Couple sharing a quiet moment beneath yellow flowers', 'center 40%'),
+  blossomFour: G('AP1GczOcy4fp4O_GEL7ccm_PXV1fmCKi3YAviVc8sDll3YoGVKHny1S52q3OMZ8msuN-fdDpvdQ7MTPOOhbFjnkuGK9GrDbNu7OIX7DGZ8U5HFN8g3M0nAo', 'Bride leaning on the groom’s shoulder in a blossoming garden', 'center 40%'),
+  pastelPortrait: G('AP1GczO9mx_z63p_wTYXpBZ8c_6jLdcWbKBJoOfuERezxHfUmcFqXcbiPT7k7prwpdsMrknpyl8hwWXuuTcb14t3mZLX92nI_oHEXT6W-JpRskcN2tDJKCk', 'Close portrait of the groom in a peach safa and the bride in pastel', 'center 30%'),
+  pastelWalk: G('AP1GczN3IGiEkbsg5q6GfQ2fzRcujAwy1Y8BfDQHxD0fxwMzKSy-OudMoziTKwYsVFCNMKvUY1FHq_PFJr6uCb_nBS0wG-IpJHoQaGAwTsGnTlmfIe0c5hc', 'Couple standing by a white garden wall under green trees', 'center 55%'),
+  gardenWalk: G('AP1GczOHmSwRfzCvbzaBLdSadGtfzzS3xWuj2fA7mtuWmGZebOK9cBv5AxD5jSgg-0vY0830rlNUHUumdVXVbiX39gQCKrWQ9LdhryH_GBIvaaLxb-5SzDE', 'Couple walking together along a leafy garden path', 'center 55%'),
+};
 
 export const images = {
   // Wedding

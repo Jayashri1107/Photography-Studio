@@ -4,7 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 import { ParallaxImage, Reveal, TextReveal } from './Motion';
 import { site, whatsappLink } from '../data/site';
-import { images } from '../data/images';
+import { album } from '../data/images';
 
 const ease = [0.22, 1, 0.36, 1];
 
@@ -38,7 +38,7 @@ export function SectionHeading({ eyebrow, title, text, align = 'left', className
 export function PageHero({ eyebrow, title, text, image, children }) {
   const reduce = useReducedMotion();
   return (
-    <section className="relative flex min-h-[78svh] items-end overflow-hidden bg-charcoal">
+    <section className="relative flex min-h-[62svh] items-end overflow-hidden bg-charcoal sm:min-h-[72svh]">
       <motion.div
         className="absolute inset-0"
         initial={reduce ? false : { clipPath: 'inset(8% 8% 8% 8% round 24px)' }}
@@ -48,7 +48,7 @@ export function PageHero({ eyebrow, title, text, image, children }) {
         <ParallaxImage image={image} eager strength={8} />
         <div className="absolute inset-0 bg-gradient-to-t from-charcoal/80 via-charcoal/30 to-charcoal/20" />
       </motion.div>
-      <div className="container-lux relative pb-16 pt-40 sm:pb-24">
+      <div className="container-lux relative pb-12 pt-32 sm:pb-20 sm:pt-40">
         {eyebrow && (
           <motion.p
             initial={reduce ? false : { opacity: 0, y: 14 }}
@@ -65,7 +65,7 @@ export function PageHero({ eyebrow, title, text, image, children }) {
             initial={reduce ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 1, ease }}
-            className="mt-6 max-w-2xl text-lg leading-relaxed text-warm/90"
+            className="mt-4 max-w-xl text-base leading-relaxed text-warm/90 sm:mt-6 sm:text-lg"
           >
             {text}
           </motion.p>
@@ -75,7 +75,7 @@ export function PageHero({ eyebrow, title, text, image, children }) {
             initial={reduce ? false : { opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 1.15, ease }}
-            className="mt-9 flex flex-wrap gap-3"
+            className="mt-7 flex flex-wrap gap-3 sm:mt-9"
           >
             {children}
           </motion.div>
@@ -86,20 +86,15 @@ export function PageHero({ eyebrow, title, text, image, children }) {
 }
 
 /** Full-width booking call to action with parallax photography. */
-export function BookingCTA({ image = images.coupleSilhouette }) {
+export function BookingCTA({ image = album.windowLight2 }) {
   return (
-    <section className="relative isolate overflow-hidden py-32 sm:py-44">
+    <section className="relative isolate overflow-hidden py-24 sm:py-40">
       <ParallaxImage image={image} strength={12} />
       <div className="absolute inset-0 bg-charcoal/55" />
       <div className="container-lux relative text-center">
-        <Reveal><p className="eyebrow mb-6 text-butter">Book your session</p></Reveal>
+        <Reveal><p className="eyebrow mb-5 text-butter">Book your session</p></Reveal>
         <TextReveal text="Let's Create Something Beautiful Together." className="display mx-auto max-w-4xl text-warm" />
-        <Reveal delay={0.2}>
-          <p className="mx-auto mt-6 max-w-xl text-lg text-warm/90">
-            Tell us about your day, your family or your brand. We reply within one working day.
-          </p>
-        </Reveal>
-        <Reveal delay={0.3} className="mt-10 flex flex-wrap justify-center gap-3">
+        <Reveal delay={0.25} className="mt-8 flex flex-wrap justify-center gap-3 sm:mt-10">
           <Link to="/contact" className="btn-light">
             Book Your Session <ArrowRight size={16} aria-hidden="true" />
           </Link>

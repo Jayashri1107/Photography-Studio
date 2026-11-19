@@ -5,7 +5,7 @@ export const site = {
   name: 'Photography Studio',
   tagline: 'Every Frame Tells Your Story.',
   intro:
-    'An Indian photography studio crafting timeless, editorial imagery for weddings, families and brands — with warmth, patience and an eye for the quiet moments.',
+    'Timeless wedding and portrait photography, made with warmth.',
   phone: '+91 00000 00000',
   phoneHref: 'tel:+910000000000',
   email: 'hello@yourstudio.com',

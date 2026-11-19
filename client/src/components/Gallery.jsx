@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Expand, X } from 'lucide-react';
 import { Img } from './Motion';
-import { imgUrl } from '../lib/img';
+import { imgSrcSet, imgUrl } from '../lib/img';
 import { categories } from '../data/categories';
 
 const ease = [0.22, 1, 0.36, 1];
@@ -67,7 +67,10 @@ export function Lightbox({ items, index, onClose, onIndex }) {
         <AnimatePresence initial={false} custom={dir} mode="popLayout">
           <motion.img
             key={item.id}
-            src={imgUrl(item.image, 1800)}
+            src={imgUrl(item.image, 1600)}
+            srcSet={imgSrcSet(item.image)}
+            sizes="100vw"
+            referrerPolicy="no-referrer"
             alt={item.image.alt}
             custom={dir}
             initial={reduce ? { opacity: 0 } : { opacity: 0, x: dir * 80, scale: 0.98 }}
@@ -107,7 +110,7 @@ export function MasonryGallery({ items, filters = true, initial = 'all' }) {
   return (
     <div>
       {filters && (
-        <div className="mb-12 flex flex-wrap justify-center gap-2" role="group" aria-label="Filter photographs by category">
+        <div className="-mx-5 mb-8 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:mb-12 sm:flex-wrap sm:justify-center sm:overflow-visible sm:px-0" role="group" aria-label="Filter photographs by category">
           {[{ slug: 'all', short: 'All' }, ...available].map((c) => {
             const on = active === c.slug;
             return (
@@ -116,7 +119,7 @@ export function MasonryGallery({ items, filters = true, initial = 'all' }) {
                 type="button"
                 onClick={() => setActive(c.slug)}
                 aria-pressed={on}
-                className={`relative rounded-full px-5 py-2.5 text-sm font-medium transition-colors duration-300 ${on ? 'text-warm' : 'text-charcoal hover:text-olive'}`}
+                className={`relative shrink-0 rounded-full px-4 py-2 text-sm font-medium sm:px-5 sm:py-2.5 transition-colors duration-300 ${on ? 'text-warm' : 'text-charcoal hover:text-olive'}`}
               >
                 {on && <motion.span layoutId="filter-pill" className="absolute inset-0 rounded-full bg-olive" transition={{ type: 'spring', stiffness: 380, damping: 34 }} />}
                 {!on && <span className="absolute inset-0 rounded-full border border-charcoal/12" />}
@@ -134,7 +137,7 @@ export function MasonryGallery({ items, filters = true, initial = 'all' }) {
           animate={{ opacity: 1, y: 0 }}
           exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
           transition={{ duration: 0.5, ease }}
-          className="columns-1 gap-5 sm:columns-2 lg:columns-3"
+          className="columns-2 gap-3 sm:gap-5 lg:columns-3"
         >
           {shown.map((item, i) => (
             <motion.button
@@ -145,13 +148,13 @@ export function MasonryGallery({ items, filters = true, initial = 'all' }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-40px' }}
               transition={{ duration: 0.8, delay: (i % 3) * 0.08, ease }}
-              className={`group relative mb-5 block w-full overflow-hidden rounded-soft bg-cream text-left ${aspect[item.image.shape] || aspect.tall}`}
+              className={`group relative mb-3 block w-full overflow-hidden rounded-xl sm:mb-5 sm:rounded-soft bg-cream text-left ${aspect[item.image.shape] || aspect.tall}`}
               aria-label={`Open photo: ${item.project}, ${item.categoryLabel}`}
             >
-              <Img image={item.image} className="img-zoom" sizes="(min-width:1024px) 33vw, (min-width:640px) 50vw, 100vw" width={900} />
+              <Img image={item.image} className="img-zoom" sizes="(min-width:1024px) 33vw, 50vw" width={900} />
               <span className="absolute inset-0 flex flex-col justify-end bg-gradient-to-t from-charcoal/75 via-charcoal/10 to-transparent p-6 opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100">
                 <span className="eyebrow text-butter">{item.categoryLabel}</span>
-                <span className="mt-1 font-serif text-2xl text-warm">{item.project}</span>
+                <span className="mt-1 font-serif text-lg text-warm sm:text-2xl">{item.project}</span>
                 <Expand size={18} className="absolute right-5 top-5 text-warm" aria-hidden="true" />
               </span>
             </motion.button>
