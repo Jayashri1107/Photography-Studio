@@ -90,4 +90,11 @@ mongoose
   .then(() => console.log('MongoDB connected'))
   .catch((err) => console.error('MongoDB connection failed:', err.message));
 
-app.listen(PORT, () => console.log(`API listening on http://localhost:${PORT}`));
+const server = app.listen(PORT, () => console.log(`API listening on http://localhost:${PORT}`));
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`Port ${PORT} is already in use — the API is probably already running in another terminal. Close it, or set a different PORT in server/.env.`);
+    process.exit(1);
+  }
+  throw err;
+});

@@ -10,9 +10,9 @@ A multi-page, premium photography studio website.
 1. Make sure MongoDB is running (Windows service `MongoDB`).
 2. Install once: `npm run install:all`
 3. Copy `server/.env.example` to `server/.env` (and optionally `client/.env.example` to `client/.env`).
-4. In two terminals:
-   - `npm run dev:server` → API on http://localhost:5050
-   - `npm run dev:client` → website on http://localhost:5601
+4. `npm run dev` — starts the API (http://localhost:5050) and the website (http://localhost:5601) together.
+   Open http://localhost:5601. Ctrl+C stops both.
+   (Or separately: `npm run dev:server` and `npm run dev:client`.)
 
 Production: `npm run build`, then `npm start` — the API also serves the built website from `client/dist`.
 
