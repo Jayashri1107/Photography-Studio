@@ -47,7 +47,7 @@ export function PhotoRing({ images }) {
   const reduce = useReducedMotion();
   const n = images.length;
   return (
-    <section className="overflow-hidden pb-16 pt-6 sm:pb-24 sm:pt-8">
+    <section className="overflow-hidden pb-16 pt-6 sm:pb-20">
       <div className="container-lux text-center">
         <Reveal><p className="eyebrow">Portfolio</p></Reveal>
         <Reveal delay={0.05}><h2 className="mt-3 font-serif text-[2.1rem] sm:text-5xl">A Glimpse Into Our World.</h2></Reveal>

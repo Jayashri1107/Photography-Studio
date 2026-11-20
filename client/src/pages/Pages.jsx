@@ -5,7 +5,7 @@ import { BookingCTA, PageHero, SectionHeading, Seo } from '../components/Common'
 import { FaqList, FeaturedProjects, Packages, ServiceCard } from '../components/Sections';
 import { MasonryGallery } from '../components/Gallery';
 import BookingForm from '../components/BookingForm';
-import { ApproachOrbit } from '../components/ApproachOrbit';
+import { ApproachSteps } from '../components/ApproachSteps';
 import { Reel, Reviews, ServiceShowcase, StoryCards } from '../components/PageParts';
 import { motion } from 'framer-motion';
 import { album as a, images } from '../data/images';
@@ -49,7 +49,7 @@ export function About() {
         </div>
       </section>
 
-      <ApproachOrbit />
+      <ApproachSteps />
 
       <section className="section">
         <div className="container-lux">

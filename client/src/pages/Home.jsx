@@ -236,7 +236,7 @@ export default function Home() {
       </section>
 
       {/* Services as story circles */}
-      <section className="pb-8 sm:pb-10">
+      <section className="pb-2">
         <div className="container-lux">
           <SectionHeading align="center" eyebrow="What we photograph" title="Stories We Love to Capture." className="mb-8 sm:mb-10" />
           <StoryHighlights />

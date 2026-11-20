@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
-import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, Instagram, MessageCircle, Quote, Star } from 'lucide-react';
 import { Img, Reveal } from './Motion';
 import { LogoMark } from './LogoMark';
 import { categories } from '../data/categories';
@@ -142,7 +142,7 @@ function Stars({ n }) {
   );
 }
 
-const initialsOf = (name) => name.split(/\s|&/).filter(Boolean).map((w) => w[0]).slice(0, 2).join('');
+const initialsOf = (name) => name.replace('@', '').split(/\s|&/).filter(Boolean).map((w) => w[0].toUpperCase()).slice(0, 2).join('');
 
 export function Reviews({ className = '' }) {
   const reduce = useReducedMotion();
@@ -164,7 +164,7 @@ export function Reviews({ className = '' }) {
       <div className="container-lux grid items-center gap-10 lg:grid-cols-12 lg:gap-16">
         <div className="lg:col-span-5">
           <Reveal><p className="eyebrow">Reviews</p></Reveal>
-          <Reveal delay={0.05}><h2 className="mt-3 font-serif text-[2.1rem] leading-tight sm:text-5xl">Kind Words From Our Couples.</h2></Reveal>
+          <Reveal delay={0.05}><h2 className="mt-3 font-serif text-[2.1rem] leading-tight sm:text-5xl">Kind Words From Our Clients.</h2></Reveal>
           <Reveal delay={0.1}><p className="mt-3 text-xs text-charcoal-soft">{reviewsNote}</p></Reveal>
           <Reveal delay={0.15} className="mt-8 flex items-center gap-4">
             <button type="button" onClick={() => go(-1)} className="grid h-11 w-11 place-items-center rounded-full border border-charcoal/15 transition hover:border-olive hover:bg-olive hover:text-warm" aria-label="Previous review"><ChevronLeft size={19} /></button>
@@ -191,7 +191,7 @@ export function Reviews({ className = '' }) {
         </div>
 
         <div
-          className="relative mx-auto h-[370px] w-full max-w-[520px] sm:h-[300px] lg:col-span-7"
+          className="relative mx-auto h-[430px] w-full max-w-[540px] sm:h-[360px] lg:col-span-7"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           aria-live="polite"
@@ -223,15 +223,14 @@ export function Reviews({ className = '' }) {
                 aria-hidden={d !== 0}
               >
                 <Quote size={34} className="absolute right-6 top-6 text-olive/15" aria-hidden="true" />
-                <Stars n={r.rating} />
-                <blockquote className="mt-4 font-serif text-xl leading-snug text-charcoal sm:text-2xl">“{r.text}”</blockquote>
+                {r.rating ? <Stars n={r.rating} /> : <span className="inline-flex items-center gap-1.5 rounded-full bg-sage/70 px-3 py-1 text-[0.65rem] font-semibold uppercase tracking-label text-olive">{r.source === 'WhatsApp' ? <MessageCircle size={12} aria-hidden="true" /> : <Instagram size={12} aria-hidden="true" />} Via {r.source}</span>}
+                <blockquote className={`mt-4 font-serif leading-snug text-charcoal ${r.text.length > 150 ? 'text-lg sm:text-xl' : 'text-xl sm:text-2xl'}`}>“{r.text}”</blockquote>
                 <figcaption className="mt-auto flex items-center gap-3 pt-4">
                   <span className="grid h-11 w-11 place-items-center rounded-full bg-sage font-serif text-lg text-olive">{initialsOf(r.name)}</span>
                   <span className="min-w-0">
                     <span className="block text-sm font-semibold">{r.name}</span>
                     <span className="block text-xs text-charcoal-soft">{r.event}</span>
                   </span>
-                  {r.sample && <span className="ml-auto rounded-full bg-butter px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-label text-olive">Sample</span>}
                 </figcaption>
               </motion.figure>
             ))}

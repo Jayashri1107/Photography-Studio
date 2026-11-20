@@ -97,19 +97,35 @@ export const testimonials = [
 ];
 export const testimonialsNote = 'Sample reviews — to be replaced with genuine client testimonials.';
 
-// ---------- Reviews (DEMO — replace with the studio's real reviews) ----------
-// Keep `sample: true` until a review is genuine; it shows a "Sample" tag on the card.
+// ---------- Reviews (real — from the studio's Instagram and WhatsApp, shared 20 Nov 2026) ----------
+// Quoted as written. `source` shows where it came from. Add `rating` (1–5) only for reviews that gave stars.
 export const reviews = [
-  { name: 'Priya & Rohan', event: 'Wedding', rating: 5, sample: true, text: 'They were everywhere and nowhere at once. Every ritual is in our album and we never once felt posed.' },
-  { name: 'Sneha & Aditya', event: 'Pre-wedding', rating: 5, sample: true, text: 'The blossom shoot felt like a walk with friends. The colours are soft and true — exactly us.' },
-  { name: 'Kavya', event: 'Maternity', rating: 5, sample: true, text: 'Gentle, patient and so kind. I feel beautiful every time I look at these photos.' },
-  { name: 'Meera & Arjun', event: 'Wedding', rating: 5, sample: true, text: 'Our parents cried at the preview. The vidaai photos are the most precious thing we own.' },
-  { name: 'Pooja', event: 'Newborn', rating: 5, sample: true, text: 'Calm with our baby the whole time, and the safety care was clear. Lovely, simple pictures.' },
-  { name: 'Ankita & Sagar', event: 'Engagement', rating: 5, sample: true, text: 'Quick replies, clear pricing and the gallery came before the promised date.' },
-  { name: 'Rutuja', event: 'Portrait', rating: 5, sample: true, text: 'Window light, no heavy filters — finally portraits that look like me on a good day.' },
-  { name: 'Nikita & Omkar', event: 'Wedding', rating: 5, sample: true, text: 'The team handled a crowd of 800 guests and still caught the small quiet moments.' },
+  {
+    name: '@urstrulymukesh',
+    event: 'Couple shoot',
+    source: 'Instagram',
+    text: 'Absolutely in love with our this shoot! A huge thanks to the amazing Rupak Team for capturing these beautiful moments so perfectly. Your creativity and dedication truly made this experience unforgettable. Great work 👏🙌❤️ Just Loveee',
+  },
+  {
+    name: '@nandineexart',
+    event: 'Bridal horse shoot',
+    source: 'Instagram story',
+    text: 'My horse wala shoot was done by @rupak_camatography. They captured it so well as it was so difficult to handle lehenga and horse together and giving all poses expressions but they did amazing job 🫶',
+  },
+  {
+    name: 'Akash',
+    event: 'Client',
+    source: 'WhatsApp',
+    text: 'Well done bhaii 🫶 Thank you Both of u ✨',
+  },
+  {
+    name: 'Happy client',
+    event: 'Client',
+    source: 'WhatsApp',
+    text: 'Mast kela ahe @Rupak camatography ❤️✨',
+  },
 ];
-export const reviewsNote = 'Sample reviews for the demo — the studio’s real reviews will replace them.';
+export const reviewsNote = 'Real messages from our clients on Instagram and WhatsApp.';
 
 // ---------- Instagram grid ----------
 export const instagramGrid = [a.maroonWindow, a.blossomOne, a.windowLight2, a.pastelClose, a.maroonCurtain, a.blossomThree];
