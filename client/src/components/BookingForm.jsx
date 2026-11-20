@@ -2,7 +2,6 @@ import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertCircle, CheckCircle2, Loader2, MessageCircle, Send } from 'lucide-react';
 import { categories } from '../data/categories';
-import { packages } from '../data/content';
 import { whatsappLink } from '../data/site';
 
 const empty = { name: '', phone: '', email: '', category: '', date: '', location: '', message: '', package: '', website: '' };
@@ -108,16 +107,13 @@ export default function BookingForm({ defaultCategory = '', defaultPackage = '' 
           <button type="button" onClick={() => setStatus('idle')} className="btn-outline mt-6">Send another enquiry</button>
         </motion.div>
       ) : (
-        <motion.form key="form" onSubmit={onSubmit} noValidate initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-4">
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+        <motion.form key="form" onSubmit={onSubmit} noValidate initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
             <div className="col-span-2 sm:col-span-1"><Field id="name" label="Full name" error={errors.name}>
               <input id="name" className={cls('name')} value={v.name} onChange={set('name')} autoComplete="name" placeholder="Your full name" {...aria('name')} />
             </Field></div>
             <div className="col-span-2 sm:col-span-1"><Field id="phone" label="Mobile number" error={errors.phone}>
               <input id="phone" type="tel" inputMode="tel" className={cls('phone')} value={v.phone} onChange={set('phone')} autoComplete="tel" placeholder="10-digit mobile" {...aria('phone')} />
-            </Field></div>
-            <div className="col-span-2"><Field id="email" label="Email (optional)" error={errors.email}>
-              <input id="email" type="email" className={cls('email')} value={v.email} onChange={set('email')} autoComplete="email" placeholder="you@example.com" {...aria('email')} />
             </Field></div>
             <Field id="category" label="Shoot type" error={errors.category}>
               <select id="category" className={cls('category')} value={v.category} onChange={set('category')} {...aria('category')}>
@@ -128,18 +124,12 @@ export default function BookingForm({ defaultCategory = '', defaultPackage = '' 
             <Field id="date" label="Preferred date" error={errors.date}>
               <input id="date" type="date" min={minDate} className={cls('date')} value={v.date} onChange={set('date')} {...aria('date')} />
             </Field>
-            <Field id="location" label="Location" error={errors.location}>
+            <div className="col-span-2"><Field id="location" label="Location" error={errors.location}>
               <input id="location" className={cls('location')} value={v.location} onChange={set('location')} placeholder="City or venue" {...aria('location')} />
-            </Field>
-          <Field id="package" label="Package (optional)">
-            <select id="package" className="field" value={v.package} onChange={set('package')}>
-              <option value="">Not sure yet</option>
-              {packages.map((p) => <option key={p.name} value={p.name}>{p.name}</option>)}
-            </select>
-          </Field>
+            </Field></div>
           </div>
           <Field id="message" label="Message (optional)" error={errors.message}>
-            <textarea id="message" rows={3} className={cls('message')} value={v.message} onChange={set('message')} placeholder="Occasion, guests, anything we should know" {...aria('message')} />
+            <textarea id="message" rows={2} className={cls('message')} value={v.message} onChange={set('message')} placeholder="Occasion, guests, anything we should know" {...aria('message')} />
           </Field>
           {/* Hidden field to catch spam bots */}
           <input type="text" name="website" value={v.website} onChange={set('website')} tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />

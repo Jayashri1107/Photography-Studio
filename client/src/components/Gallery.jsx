@@ -156,10 +156,39 @@ export function EditorialGrid({ items, onOpen }) {
   );
 }
 
+/** Small square tiles, Instagram style — keeps long galleries short. */
+export function SquareGrid({ items, onOpen }) {
+  const reduce = useReducedMotion();
+  return (
+    <div className="grid grid-cols-3 gap-1.5 sm:grid-cols-4 sm:gap-2.5 lg:grid-cols-6">
+      {items.map((item, i) => (
+        <motion.button
+          key={item.id}
+          type="button"
+          onClick={() => onOpen(i)}
+          initial={reduce ? false : { opacity: 0, scale: 0.8, rotate: i % 2 ? 3 : -3 }}
+          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+          viewport={{ once: true, margin: '-30px' }}
+          transition={{ duration: 0.7, delay: (i % 6) * 0.06, ease }}
+          className="group relative aspect-square overflow-hidden rounded-md bg-cream text-left sm:rounded-lg"
+          aria-label={`Open photo: ${item.project}, ${item.categoryLabel}`}
+        >
+          <Img image={item.image} className="img-zoom" sizes="(min-width:1024px) 16vw, (min-width:640px) 25vw, 33vw" width={500} />
+          <span className="absolute inset-0 flex items-end bg-gradient-to-t from-charcoal/75 to-transparent p-2.5 opacity-0 transition-opacity duration-500 group-hover:opacity-100 group-focus-visible:opacity-100">
+            <span className="text-[0.62rem] font-semibold uppercase tracking-label text-butter">{item.categoryLabel}</span>
+          </span>
+        </motion.button>
+      ))}
+    </div>
+  );
+}
+
 /** Gallery with category filters, an editorial mixed-size layout and a full-screen lightbox. */
-export function MasonryGallery({ items, filters = true, initial = 'all' }) {
+export function MasonryGallery({ items, filters = true, initial = 'all', compact = false, limit = 12 }) {
   const [active, setActive] = useState(initial);
   const [open, setOpen] = useState(null);
+  const [count, setCount] = useState(limit);
+  useEffect(() => setCount(limit), [active, limit]);
   const reduce = useReducedMotion();
 
   const shown = useMemo(() => (active === 'all' ? items : items.filter((i) => i.category === active)), [items, active]);
@@ -196,9 +225,17 @@ export function MasonryGallery({ items, filters = true, initial = 'all' }) {
           exit={reduce ? { opacity: 0 } : { opacity: 0, y: -10 }}
           transition={{ duration: 0.5, ease }}
         >
-          <EditorialGrid items={shown} onOpen={setOpen} />
+          {compact ? <SquareGrid items={shown.slice(0, count)} onOpen={setOpen} /> : <EditorialGrid items={shown} onOpen={setOpen} />}
         </motion.div>
       </AnimatePresence>
+
+      {compact && shown.length > count && (
+        <div className="mt-8 text-center">
+          <button type="button" onClick={() => setCount((n) => n + limit)} className="btn-outline">
+            Show more photos <span className="text-charcoal-soft">({shown.length - count})</span>
+          </button>
+        </div>
+      )}
 
       <AnimatePresence>
         {open !== null && <Lightbox items={shown} index={open} onIndex={setOpen} onClose={() => setOpen(null)} />}

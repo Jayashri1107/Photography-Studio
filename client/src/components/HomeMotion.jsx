@@ -55,12 +55,12 @@ function BurstTile({ image, i, progress, reduce }) {
   const row = Math.floor(i / 3);
   const [bx, by, br] = spread[i];
   const pct = (n) => `${n * 100}%`;
-  const steps = [0, 0.3, 0.55, 0.8];
+  const steps = [0, 0.15, 0.45, 0.72];
   // collected pile → burst outward → settle in place
   const x = useTransform(progress, steps, [pct((1 - col) * 1.04), pct((1 - col) * 1.04), pct((col - 1) * 0.6 + bx * 0.5), '0%']);
   const y = useTransform(progress, steps, [pct((1 - row) * 1.04), pct((1 - row) * 1.04), pct((row - 1) * 0.6 + by * 0.5), '0%']);
   const rotate = useTransform(progress, steps, [(i - 4) * 5, (i - 4) * 3, br, 0]);
-  const scale = useTransform(progress, steps, [0.82, 0.86, 0.72, 1]);
+  const scale = useTransform(progress, steps, [1.25, 1.2, 0.78, 1]);
   const style = reduce ? undefined : { x, y, rotate, scale, zIndex: i === 4 ? 10 : 9 - Math.abs(i - 4) };
   return (
     <motion.a
@@ -82,32 +82,24 @@ function BurstTile({ image, i, progress, reduce }) {
 export function BurstGrid({ images }) {
   const ref = useRef(null);
   const reduce = useReducedMotion();
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] });
-  const titleOpacity = useTransform(scrollYProgress, [0.55, 0.8], [0, 1]);
-  const titleY = useTransform(scrollYProgress, [0.55, 0.8], [20, 0]);
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+  // The burst starts while the section is still sliding in, so there is never an empty screen.
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.55', 'end end'] });
+  const buttonsOpacity = useTransform(scrollYProgress, [0.55, 0.75], [0, 1]);
   const tiles = images.slice(0, 9);
   return (
-    <section ref={ref} className={reduce ? 'section' : 'relative h-[260vh]'}>
+    <section ref={ref} className={reduce ? 'section' : 'relative h-[190vh]'}>
       <div className={reduce ? '' : 'sticky top-0 flex h-[100svh] flex-col items-center justify-center overflow-hidden pt-16'}>
         <div className="container-lux flex flex-col items-center">
-          <div className="relative mb-5 h-20 text-center sm:mb-6">
-            {!reduce && (
-              <motion.p style={{ opacity: hintOpacity }} className="eyebrow absolute inset-x-0 top-6 whitespace-nowrap">
-                Scroll to open the album
-              </motion.p>
-            )}
-            <motion.div style={reduce ? undefined : { opacity: titleOpacity, y: titleY }}>
-              <p className="eyebrow">Portfolio</p>
-              <h2 className="mt-2 font-serif text-3xl sm:text-4xl">A Glimpse Into Our World.</h2>
-            </motion.div>
+          <div className="mb-5 text-center sm:mb-6">
+            <p className="eyebrow">Portfolio</p>
+            <h2 className="mt-2 font-serif text-3xl sm:text-4xl">A Glimpse Into Our World.</h2>
           </div>
           <div className="grid w-full max-w-[min(500px,46svh)] grid-cols-3 gap-1.5 sm:gap-2.5">
             {tiles.map((img, i) => (
               <BurstTile key={i} image={img} i={i} progress={scrollYProgress} reduce={reduce} />
             ))}
           </div>
-          <motion.div style={reduce ? undefined : { opacity: titleOpacity }} className="mt-6 flex flex-wrap justify-center gap-3">
+          <motion.div style={reduce ? undefined : { opacity: buttonsOpacity }} className="mt-6 flex flex-wrap justify-center gap-3">
             <Link to="/portfolio" className="btn-primary">View Full Portfolio</Link>
             <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="btn-outline">
               <Instagram size={16} aria-hidden="true" /> {site.instagramHandle}

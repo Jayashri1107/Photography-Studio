@@ -2,9 +2,11 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, Clock, Instagram, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { Reveal, RevealImage, Stagger, staggerItem, TextReveal } from '../components/Motion';
 import { BookingCTA, PageHero, SectionHeading, Seo } from '../components/Common';
-import { Approach, FaqList, FeaturedProjects, Packages, ServiceCard, ServicesGrid, Testimonials } from '../components/Sections';
+import { FaqList, FeaturedProjects, Packages, ServiceCard } from '../components/Sections';
 import { MasonryGallery } from '../components/Gallery';
 import BookingForm from '../components/BookingForm';
+import { ApproachOrbit } from '../components/ApproachOrbit';
+import { Reel, Reviews, ServiceShowcase, StoryCards } from '../components/PageParts';
 import { motion } from 'framer-motion';
 import { album as a, images } from '../data/images';
 import { categories, categoryBySlug } from '../data/categories';
@@ -47,12 +49,7 @@ export function About() {
         </div>
       </section>
 
-      <section className="section bg-cream/70">
-        <div className="container-lux">
-          <SectionHeading align="center" eyebrow="How we work" title="The Art Behind Every Frame." className="mb-10 sm:mb-14" />
-          <Approach />
-        </div>
-      </section>
+      <ApproachOrbit />
 
       <section className="section">
         <div className="container-lux">
@@ -86,16 +83,16 @@ export function Portfolio() {
   return (
     <>
       <Seo title="Portfolio" description="Browse the Rupak Camatography portfolio — Indian weddings, pre-wedding, maternity, newborn, portrait, event and fashion photography." />
-      <PageHero eyebrow="Portfolio" title="A Glimpse Into Our World." text="Tap any photo to view it full-screen." image={a.maroonEmbrace} />
-      <section className="section">
+      <PageHero compact eyebrow="Portfolio" title="A Glimpse Into Our World." text="Tap any photo to view it full-screen." image={a.maroonEmbrace} />
+      <section className="py-12 sm:py-16">
         <div className="container-lux">
-          <MasonryGallery key={initial} items={interleaved(portfolio)} initial={initial} />
+          <MasonryGallery key={initial} items={interleaved(portfolio)} initial={initial} compact />
         </div>
       </section>
-      <section className="section bg-cream/70">
+      <section className="pb-16 sm:pb-24">
         <div className="container-lux">
-          <SectionHeading eyebrow="Stories" title="Featured Shoots." className="mb-12 sm:mb-16" />
-          <FeaturedProjects items={projects} />
+          <SectionHeading eyebrow="Stories" title="Featured Shoots." className="mb-8 sm:mb-10" />
+          <StoryCards />
         </div>
       </section>
       <BookingCTA />
@@ -143,7 +140,7 @@ export function CategoryPage({ slug }) {
       <section id="gallery" className="section scroll-mt-20 bg-cream/70">
         <div className="container-lux">
           <SectionHeading align="center" eyebrow="Gallery" title={`${c.short} Stories.`} className="mb-8 sm:mb-14" />
-          <MasonryGallery items={items} filters={false} />
+          <MasonryGallery items={items} filters={false} compact limit={12} />
         </div>
       </section>
 
@@ -187,11 +184,11 @@ export function Services() {
   return (
     <>
       <Seo title="Services & Packages" description="Photography services and packages — weddings, pre-wedding, portraits, maternity, newborn, events and fashion. Essential, Signature and Luxury packages." />
-      <PageHero eyebrow="Services & packages" title="Find the Perfect Experience." text="Seven kinds of stories, three ways to tell them." image={a.blossomOne} />
-      <section className="section">
+      <PageHero compact eyebrow="Services & packages" title="Find the Perfect Experience." text="Seven kinds of stories, three ways to tell them." image={a.blossomOne} />
+      <section className="py-14 sm:py-20">
         <div className="container-lux">
-          <SectionHeading eyebrow="What we photograph" title="Stories We Love to Capture." className="mb-10 sm:mb-14" />
-          <ServicesGrid />
+          <SectionHeading eyebrow="What we photograph" title="Stories We Love to Capture." className="mb-8 sm:mb-10" />
+          <ServiceShowcase />
         </div>
       </section>
       <section className="section bg-butter/45">
@@ -200,12 +197,7 @@ export function Services() {
           <Packages />
         </div>
       </section>
-      <section className="section">
-        <div className="container-lux">
-          <SectionHeading eyebrow="Testimonials" title="Kind Words From Our Clients." className="mb-14" />
-          <Testimonials />
-        </div>
-      </section>
+      <Reviews className="!bg-warm" />
       <BookingCTA image={a.pastelLook} />
     </>
   );
@@ -229,16 +221,17 @@ export function Contact() {
       <section className="py-12 sm:py-16 lg:py-20">
         <div className="container-lux grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-7">
-            <div className="rounded-soft border border-charcoal/10 bg-warm p-5 shadow-[0_24px_60px_-40px_rgba(65,68,61,0.45)] sm:p-8">
-              <p className="eyebrow mb-2">Booking enquiry</p>
-              <h2 className="mb-6 font-serif text-2xl sm:text-3xl">Tell us about your shoot.</h2>
+            <div className="rounded-soft border border-charcoal/10 bg-warm p-5 shadow-[0_24px_60px_-40px_rgba(65,68,61,0.45)] sm:p-7">
+              <p className="eyebrow mb-1.5">Booking enquiry</p>
+              <h2 className="mb-5 font-serif text-2xl sm:text-[1.7rem]">Tell us about your shoot.</h2>
               <BookingForm defaultCategory={cat} defaultPackage={pkg} />
             </div>
           </div>
           <aside className="lg:col-span-5">
-            <div className="rounded-soft bg-sage/45 p-6 sm:p-8 lg:sticky lg:top-28">
-              <h2 className="font-serif text-2xl sm:text-3xl">Studio details</h2>
-              <ul className="mt-6 space-y-4">
+            <Reel images={[a.brideMehendi, a.pastelClose, a.maroonSmile, a.blossomTwo, a.windowLight]} className="mb-4 aspect-[16/10]" />
+            <div className="rounded-soft bg-sage/45 p-5 sm:p-6">
+              <h2 className="font-serif text-2xl">Studio details</h2>
+              <ul className="mt-4 space-y-3">
                 {details.map(({ icon: Icon, label, value, href, external }) => (
                   <li key={label + value} className="flex items-center gap-3">
                     <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-warm text-olive"><Icon size={17} aria-hidden="true" /></span>
@@ -253,7 +246,7 @@ export function Contact() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-7 grid grid-cols-2 gap-3">
+              <div className="mt-5 grid grid-cols-2 gap-3">
                 <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="btn-primary !px-4"><MessageCircle size={16} aria-hidden="true" /> WhatsApp</a>
                 <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="btn-outline !px-4"><Instagram size={16} aria-hidden="true" /> Instagram</a>
               </div>
@@ -261,7 +254,8 @@ export function Contact() {
           </aside>
         </div>
       </section>
-      <section className="section bg-cream/70">
+      <Reviews />
+      <section className="section">
         <div className="container-lux max-w-4xl">
           <SectionHeading eyebrow="Before you book" title="Common Questions." className="mb-10" />
           <FaqList items={faqs.filter((f) => f.group === 'Booking' || f.group === 'Pricing')} />

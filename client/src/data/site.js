@@ -16,6 +16,8 @@ export const site = {
   hours: '',
   instagram: 'https://www.instagram.com/rupak_camatography/?hl=en',
   instagramHandle: '@rupak_camatography',
+  // A short showreel for the contact page, e.g. '/showreel.mp4' placed in client/public. Empty = moving photo slideshow.
+  video: '',
   facebook: '', // the studio has no Facebook page; the icon stays hidden while this is empty
 };
 
