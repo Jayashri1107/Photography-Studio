@@ -1,14 +1,11 @@
 import { motion, useReducedMotion } from 'framer-motion';
 import { BookOpen, Camera, Gem, Palette } from 'lucide-react';
-import { Img } from './Motion';
+import { LogoMark } from './LogoMark';
 import { approach } from '../data/content';
-import { album as a } from '../data/images';
 import { site } from '../data/site';
 
 const ease = [0.22, 1, 0.36, 1];
 const icons = { BookOpen, Camera, Gem, Palette };
-// Small photos that travel round the logo.
-const orbitPhotos = [a.brideMehendi, a.pastelClose, a.maroonSmile, a.blossomTwo, a.windowHands, a.redGarden];
 
 // Desktop: the four cards sit at the corners; `from` is how far they travel from the logo when they fly out.
 const corners = [
@@ -25,34 +22,23 @@ function CentreLogo() {
       {/* two dashed rings turning in opposite directions */}
       <span className="spin-slow absolute inset-0 rounded-full border border-dashed border-warm/25" />
       <span className="spin-slow-reverse absolute inset-10 rounded-full border border-butter/20" />
-      {/* photos riding the outer ring */}
+      {/* small glowing points travelling on the rings */}
       <div className="spin-slow absolute inset-0" aria-hidden="true">
-        {orbitPhotos.map((img, k) => {
-          const angle = (k / orbitPhotos.length) * Math.PI * 2;
-          return (
-            <span
-              key={k}
-              className="absolute h-11 w-11 -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-full border-2 border-warm/80 shadow-lg sm:h-12 sm:w-12"
-              style={{ left: `${50 + 50 * Math.cos(angle)}%`, top: `${50 + 50 * Math.sin(angle)}%` }}
-            >
-              <span className="spin-slow-reverse block h-full w-full">
-                <Img image={img} sizes="48px" width={160} />
-              </span>
-            </span>
-          );
-        })}
+        <span className="absolute left-1/2 top-0 h-2.5 w-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-butter shadow-[0_0_12px_3px_rgba(248,240,206,0.7)]" />
+        <span className="absolute bottom-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 translate-y-1/2 rounded-full bg-sage shadow-[0_0_10px_2px_rgba(220,232,213,0.6)]" />
+      </div>
+      <div className="spin-slow-reverse absolute inset-10" aria-hidden="true">
+        <span className="absolute right-0 top-1/2 h-2 w-2 -translate-y-1/2 translate-x-1/2 rounded-full bg-butter/80 shadow-[0_0_10px_2px_rgba(248,240,206,0.6)]" />
       </div>
       <motion.div
-        className="relative grid h-32 w-32 place-items-center rounded-full bg-[#F4E9D8] shadow-[0_0_0_10px_rgba(248,240,206,0.08),0_0_60px_10px_rgba(248,240,206,0.18)] sm:h-36 sm:w-36"
+        className="relative grid h-36 w-36 place-items-center rounded-full bg-[#F4E9D8] shadow-[0_0_0_10px_rgba(248,240,206,0.08),0_0_60px_10px_rgba(248,240,206,0.18)] sm:h-44 sm:w-44"
         initial={reduce ? false : { scale: 0, rotate: -120 }}
         whileInView={{ scale: 1, rotate: 0 }}
         viewport={{ once: true }}
         transition={{ type: 'spring', stiffness: 120, damping: 14 }}
       >
         <span className="pulse-ring absolute inset-0 rounded-full" />
-        <span className="block h-full w-full overflow-hidden rounded-full">
-          <img src={site.logo} alt={site.name} className="h-full w-full scale-[1.16] object-cover" />
-        </span>
+        <LogoMark className="h-full w-full" alt={site.name} />
       </motion.div>
     </div>
   );

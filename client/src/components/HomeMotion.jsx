@@ -1,8 +1,7 @@
-import { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Instagram } from 'lucide-react';
-import { Img } from './Motion';
+import { Img, Reveal } from './Motion';
 import { categories } from '../data/categories';
 import { site } from '../data/site';
 
@@ -42,71 +41,52 @@ export function StoryHighlights() {
   );
 }
 
-// ---------- Collect → burst → settle into a 3×3 grid, driven by scroll ----------
-// Each tile is moved by a percentage of its own size, so the same numbers work on any screen.
-const spread = [
-  [-1.6, -1.3, -18], [0.2, -1.9, 9], [1.7, -1.1, 16],
-  [-2.0, 0.1, 12], [0, 0, 0], [2.1, -0.2, -14],
-  [-1.5, 1.6, -10], [-0.1, 2.0, 7], [1.8, 1.5, 20],
-];
-
-function BurstTile({ image, i, progress, reduce }) {
-  const col = i % 3;
-  const row = Math.floor(i / 3);
-  const [bx, by, br] = spread[i];
-  const pct = (n) => `${n * 100}%`;
-  const steps = [0, 0.15, 0.45, 0.72];
-  // collected pile → burst outward → settle in place
-  const x = useTransform(progress, steps, [pct((1 - col) * 1.04), pct((1 - col) * 1.04), pct((col - 1) * 0.6 + bx * 0.5), '0%']);
-  const y = useTransform(progress, steps, [pct((1 - row) * 1.04), pct((1 - row) * 1.04), pct((row - 1) * 0.6 + by * 0.5), '0%']);
-  const rotate = useTransform(progress, steps, [(i - 4) * 5, (i - 4) * 3, br, 0]);
-  const scale = useTransform(progress, steps, [1.25, 1.2, 0.78, 1]);
-  const style = reduce ? undefined : { x, y, rotate, scale, zIndex: i === 4 ? 10 : 9 - Math.abs(i - 4) };
-  return (
-    <motion.a
-      href={site.instagram}
-      target="_blank"
-      rel="noopener noreferrer"
-      style={style}
-      className="group relative block aspect-square overflow-hidden rounded-md bg-cream shadow-[0_18px_40px_-18px_rgba(65,68,61,0.55)] sm:rounded-lg"
-      aria-label={`View on Instagram: ${image.alt}`}
-    >
-      <Img image={image} className="img-zoom" sizes="(min-width:768px) 190px, 31vw" width={500} />
-      <span className="absolute inset-0 grid place-items-center bg-olive/55 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-        <Instagram size={22} className="text-warm" aria-hidden="true" />
-      </span>
-    </motion.a>
-  );
-}
-
-export function BurstGrid({ images }) {
-  const ref = useRef(null);
+// ---------- A slowly turning 3D ring of photos ----------
+// Each photo stands on a circle (rotateY + translateZ); the whole ring turns with CSS (index.css: .ring-spin).
+export function PhotoRing({ images }) {
   const reduce = useReducedMotion();
-  // The burst starts while the section is still sliding in, so there is never an empty screen.
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 0.55', 'end end'] });
-  const buttonsOpacity = useTransform(scrollYProgress, [0.55, 0.75], [0, 1]);
-  const tiles = images.slice(0, 9);
+  const n = images.length;
   return (
-    <section ref={ref} className={reduce ? 'section' : 'relative h-[190vh]'}>
-      <div className={reduce ? '' : 'sticky top-0 flex h-[100svh] flex-col items-center justify-center overflow-hidden pt-16'}>
-        <div className="container-lux flex flex-col items-center">
-          <div className="mb-5 text-center sm:mb-6">
-            <p className="eyebrow">Portfolio</p>
-            <h2 className="mt-2 font-serif text-3xl sm:text-4xl">A Glimpse Into Our World.</h2>
-          </div>
-          <div className="grid w-full max-w-[min(500px,46svh)] grid-cols-3 gap-1.5 sm:gap-2.5">
-            {tiles.map((img, i) => (
-              <BurstTile key={i} image={img} i={i} progress={scrollYProgress} reduce={reduce} />
-            ))}
-          </div>
-          <motion.div style={reduce ? undefined : { opacity: buttonsOpacity }} className="mt-6 flex flex-wrap justify-center gap-3">
-            <Link to="/portfolio" className="btn-primary">View Full Portfolio</Link>
-            <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="btn-outline">
-              <Instagram size={16} aria-hidden="true" /> {site.instagramHandle}
-            </a>
-          </motion.div>
-        </div>
+    <section className="section overflow-hidden">
+      <div className="container-lux text-center">
+        <Reveal><p className="eyebrow">Portfolio</p></Reveal>
+        <Reveal delay={0.05}><h2 className="mt-3 font-serif text-[2.1rem] sm:text-5xl">A Glimpse Into Our World.</h2></Reveal>
+        <Reveal delay={0.1}><p className="mt-3 text-sm text-charcoal-soft">Hover to pause · tap a photo to see the full portfolio</p></Reveal>
       </div>
+      <motion.div
+        className="ring-stage relative mx-auto mt-6 h-[280px] sm:mt-10 sm:h-[380px]"
+        initial={reduce ? false : { opacity: 0, scale: 0.7, rotateX: 25 }}
+        whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
+        viewport={{ once: true, margin: '-60px' }}
+        transition={{ duration: 1.4, ease }}
+      >
+        {/* soft shadow on the "floor" */}
+        <div className="absolute bottom-0 left-1/2 h-10 w-[70%] max-w-[640px] -translate-x-1/2 rounded-[50%] bg-charcoal/15 blur-2xl" />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 [transform-style:preserve-3d]">
+          <div className="ring-tilt [transform-style:preserve-3d]">
+            <div className="ring-spin relative h-[170px] w-[124px] [transform-style:preserve-3d] sm:h-[250px] sm:w-[180px]">
+              {images.map((img, i) => (
+                <Link
+                  key={i}
+                  to="/portfolio"
+                  className="ring-item group absolute inset-0 overflow-hidden rounded-xl bg-cream shadow-[0_24px_40px_-24px_rgba(65,68,61,0.6)]"
+                  style={{ '--a': `${(360 / n) * i}deg` }}
+                  aria-label={`See the portfolio: ${img.alt}`}
+                >
+                  <Img image={img} className="img-zoom" sizes="180px" width={500} />
+                  <span className="absolute inset-0 bg-gradient-to-t from-charcoal/30 to-transparent" />
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </motion.div>
+      <Reveal className="mt-8 flex flex-wrap justify-center gap-3 sm:mt-12">
+        <Link to="/portfolio" className="btn-primary">View Full Portfolio</Link>
+        <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="btn-outline">
+          <Instagram size={16} aria-hidden="true" /> {site.instagramHandle}
+        </a>
+      </Reveal>
     </section>
   );
 }

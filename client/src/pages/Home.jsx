@@ -4,14 +4,14 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowDown, ArrowRight } from 'lucide-react';
 import { Img, Reveal, RevealImage, TextReveal, useParallax } from '../components/Motion';
 import { BookingCTA, SectionHeading, Seo } from '../components/Common';
-import { BurstGrid, PhotoMarquee, StoryHighlights } from '../components/HomeMotion';
+import { PhotoMarquee, PhotoRing, StoryHighlights } from '../components/HomeMotion';
 import { album as a } from '../data/images';
 import { imgUrl } from '../lib/img';
 
 const ease = [0.22, 1, 0.36, 1];
 
-// Nine of the studio's own photos for the burst grid, and a longer set for the sliding strips.
-const burst = [a.maroonWindow, a.blossomOne, a.windowLight2, a.pastelClose, a.redGarden, a.maroonCurtain, a.blossomThree, a.monoKiss, a.pastelLook];
+// Ten of the studio's own photos for the turning ring, and a longer set for the sliding strips.
+const ringPhotos = [a.maroonWindow, a.blossomOne, a.windowLight2, a.pastelClose, a.redGarden, a.maroonCurtain, a.blossomThree, a.monoKiss, a.pastelLook, a.brideMehendi];
 const strip = [a.brideMehendi, a.pastelStand, a.maroonSmile, a.blossomTwo, a.foreheadKiss, a.pastelFull, a.windowSoft, a.blossomFour, a.maroonClose, a.gardenWalk, a.pastelPortrait, a.windowHands, a.pastelTogether, a.maroonEmbrace, a.pastelWalk, a.windowLight];
 const INTERVAL = 5200;
 
@@ -243,8 +243,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Portfolio: the photos gather, burst apart and settle into a grid */}
-      <BurstGrid images={burst} />
+      {/* Portfolio: a slowly turning 3D ring of photos */}
+      <PhotoRing images={ringPhotos} />
 
       {/* Endless sliding strips */}
       <section className="section bg-cream/70">

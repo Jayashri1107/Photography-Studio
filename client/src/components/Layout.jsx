@@ -1,3 +1,4 @@
+import { LogoMark } from './LogoMark';
 import { useEffect, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useReducedMotion, useScroll, useSpring } from 'framer-motion';
@@ -11,8 +12,8 @@ export function Logo({ light = false }) {
   return (
     <Link to="/" className="group flex items-center gap-3" aria-label={`${site.name} — home`}>
       {/* The logo file has a white square behind the circle, so it is cropped to a circle here. */}
-      <span className={`block h-16 w-16 shrink-0 overflow-hidden rounded-full bg-[#F4E9D8] shadow-[0_8px_22px_-8px_rgba(0,0,0,0.55)] ring-2 transition-transform duration-500 group-hover:scale-105 sm:h-[4.75rem] sm:w-[4.75rem] ${light ? 'ring-warm/60' : 'ring-olive/20'}`}>
-        <img src={site.logo} alt="" width="76" height="76" className="h-full w-full scale-[1.16] object-cover" />
+      <span className={`block h-16 w-16 shrink-0 rounded-full shadow-[0_8px_22px_-8px_rgba(0,0,0,0.55)] ring-2 transition-transform duration-500 group-hover:scale-105 sm:h-[4.75rem] sm:w-[4.75rem] ${light ? 'ring-warm/60' : 'ring-olive/20'}`}>
+        <LogoMark className="h-full w-full" />
       </span>
       <span className="leading-none">
         <span className={`block font-serif text-[1.6rem] font-medium tracking-wide transition-colors duration-500 sm:text-[1.9rem] ${light ? 'text-warm' : 'text-charcoal'}`}>Rupak</span>

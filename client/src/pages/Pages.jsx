@@ -229,14 +229,20 @@ export function Contact() {
           </div>
           <aside className="lg:col-span-5">
             <Reel images={[a.brideMehendi, a.pastelClose, a.maroonSmile, a.blossomTwo, a.windowLight]} className="mb-4 aspect-[16/10]" />
-            <div className="rounded-soft bg-sage/45 p-5 sm:p-6">
-              <h2 className="font-serif text-2xl">Studio details</h2>
-              <ul className="mt-4 space-y-3">
+            <div className="rounded-xl bg-sage/45 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <h2 className="font-serif text-xl">Studio details</h2>
+                <div className="flex gap-2">
+                  <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="grid h-9 w-9 place-items-center rounded-full bg-olive text-warm transition hover:bg-olive-deep"><MessageCircle size={16} aria-hidden="true" /></a>
+                  <a href={site.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="grid h-9 w-9 place-items-center rounded-full border border-olive/40 text-olive transition hover:bg-olive hover:text-warm"><Instagram size={16} aria-hidden="true" /></a>
+                </div>
+              </div>
+              <ul className="mt-3 grid grid-cols-2 gap-x-3 gap-y-2.5 text-sm">
                 {details.map(({ icon: Icon, label, value, href, external }) => (
-                  <li key={label + value} className="flex items-center gap-3">
-                    <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-warm text-olive"><Icon size={17} aria-hidden="true" /></span>
-                    <span className="min-w-0">
-                      <span className="block text-[0.68rem] font-semibold uppercase tracking-label text-olive">{label}</span>
+                  <li key={label + value} className={`flex items-center gap-2 ${label === 'Studio' ? 'col-span-2' : ''}`}>
+                    <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-warm text-olive"><Icon size={14} aria-hidden="true" /></span>
+                    <span className="min-w-0 leading-snug">
+                      <span className="block text-[0.6rem] font-semibold uppercase tracking-label text-olive">{label}</span>
                       {href ? (
                         <a href={href} className="hover:text-olive" {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{value}</a>
                       ) : (
@@ -246,10 +252,6 @@ export function Contact() {
                   </li>
                 ))}
               </ul>
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" className="btn-primary !px-4"><MessageCircle size={16} aria-hidden="true" /> WhatsApp</a>
-                <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="btn-outline !px-4"><Instagram size={16} aria-hidden="true" /> Instagram</a>
-              </div>
             </div>
           </aside>
         </div>
