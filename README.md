@@ -45,6 +45,11 @@ birthday & events, fashion & commercial) · Services & Packages · Contact / Boo
 
 ## Booking enquiries
 
+The booking form opens WhatsApp with the whole enquiry written out (name, mobile, shoot type, date, location,
+package, message), addressed to the studio's WhatsApp number (`VITE_WHATSAPP_NUMBER`). The visitor taps Send in
+WhatsApp. In the background it also tries to save a copy through the API below; if the server or database is not
+running, WhatsApp still works.
+
 `POST /api/enquiries` validates the form on the server too, rate-limits (10 per 15 min per connection), has a
 spam honeypot, and saves to the `enquiries` collection. The form only shows success after the server confirms
 the save. There is deliberately no public endpoint to list enquiries — add a login-protected admin view before

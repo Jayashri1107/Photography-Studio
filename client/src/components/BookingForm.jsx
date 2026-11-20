@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { AlertCircle, CheckCircle2, Loader2, MessageCircle, Send } from 'lucide-react';
+import { AlertCircle, CheckCircle2, MessageCircle } from 'lucide-react';
 import { categories } from '../data/categories';
-import { whatsappLink } from '../data/site';
+import { site, whatsappLink } from '../data/site';
 
 const empty = { name: '', phone: '', email: '', category: '', date: '', location: '', message: '', package: '', website: '' };
 
@@ -43,8 +43,7 @@ function Field({ id, label, error, children, hint }) {
 export default function BookingForm({ defaultCategory = '', defaultPackage = '' }) {
   const [v, setV] = useState({ ...empty, category: defaultCategory, package: defaultPackage });
   const [errors, setErrors] = useState({});
-  const [status, setStatus] = useState('idle'); // idle | sending | success | error
-  const [serverMsg, setServerMsg] = useState('');
+  const [status, setStatus] = useState('idle'); // idle | success
   const minDate = useMemo(() => new Date().toISOString().slice(0, 10), []);
 
   const set = (k) => (e) => {
@@ -52,10 +51,26 @@ export default function BookingForm({ defaultCategory = '', defaultPackage = '' 
     if (errors[k]) setErrors((er) => ({ ...er, [k]: undefined }));
   };
 
-  const catLabel = categories.find((c) => c.slug === v.category)?.title || 'a photoshoot';
-  const waMessage = `Hello Rupak Camatography, I'm ${v.name || '…'} and I'd like to enquire about ${catLabel}${v.date ? ` on ${v.date}` : ''}${v.location ? ` in ${v.location}` : ''}.${v.message ? ` ${v.message}` : ''}`;
+  const [sentLink, setSentLink] = useState('');
 
-  async function onSubmit(e) {
+  // The whole enquiry, written out as a WhatsApp message to the studio.
+  function enquiryMessage(x) {
+    const cat = categories.find((c) => c.slug === x.category)?.title || x.category;
+    const date = x.date ? new Date(`${x.date}T00:00:00`).toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
+    return [
+      `Hello ${site.name}, I would like to book a shoot.`,
+      '',
+      `Name: ${x.name.trim()}`,
+      `Mobile: ${x.phone.trim()}`,
+      `Shoot type: ${cat}`,
+      `Preferred date: ${date}`,
+      `Location: ${x.location.trim()}`,
+      x.package ? `Package: ${x.package}` : null,
+      x.message.trim() ? `Message: ${x.message.trim()}` : null,
+    ].filter((line) => line !== null).join('\n');
+  }
+
+  function onSubmit(e) {
     e.preventDefault();
     const found = validate(v);
     setErrors(found);
@@ -63,29 +78,23 @@ export default function BookingForm({ defaultCategory = '', defaultPackage = '' 
       document.getElementById(Object.keys(found)[0])?.focus();
       return;
     }
-    setStatus('sending');
-    setServerMsg('');
-    try {
-      const res = await fetch('/api/enquiries', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(v),
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        if (data.errors) setErrors(data.errors);
-        throw new Error(data.message || 'Our booking system did not respond. Please try again in a moment or message us on WhatsApp.');
-      }
-      setStatus('success');
-      setV({ ...empty });
-    } catch (err) {
-      setStatus('error');
-      setServerMsg(
-        err instanceof TypeError
-          ? 'We could not reach our booking system. Please check your connection or message us on WhatsApp.'
-          : err.message
-      );
-    }
+    if (v.website) return; // spam bot filled the hidden field
+
+    // WhatsApp must open straight from the click, or the browser blocks it as a pop-up.
+    const link = whatsappLink(enquiryMessage(v));
+    const win = window.open(link, '_blank', 'noopener');
+    if (!win) window.location.href = link;
+
+    // Backup copy in the studio's database when the server is running; WhatsApp works without it.
+    fetch('/api/enquiries', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(v),
+    }).catch(() => {});
+
+    setSentLink(link);
+    setStatus('success');
+    setV({ ...empty });
   }
 
   const cls = (k) => `field ${errors[k] ? 'field-error' : ''}`;
@@ -102,9 +111,12 @@ export default function BookingForm({ defaultCategory = '', defaultPackage = '' 
           role="status"
         >
           <CheckCircle2 size={40} className="mx-auto text-olive" strokeWidth={1.4} aria-hidden="true" />
-          <h3 className="mt-4 font-serif text-2xl sm:text-3xl">Thank you — your enquiry has been received.</h3>
-          <p className="mx-auto mt-3 max-w-md text-sm text-charcoal-soft">We will call you within one working day to check availability.</p>
-          <button type="button" onClick={() => setStatus('idle')} className="btn-outline mt-6">Send another enquiry</button>
+          <h3 className="mt-4 font-serif text-2xl sm:text-3xl">Your enquiry is ready in WhatsApp.</h3>
+          <p className="mx-auto mt-3 max-w-md text-sm text-charcoal-soft">Tap <strong>Send</strong> in WhatsApp so it reaches us. We reply within one working day.</p>
+          <div className="mt-6 flex flex-wrap justify-center gap-3">
+            <a href={sentLink} target="_blank" rel="noopener noreferrer" className="btn-primary"><MessageCircle size={16} aria-hidden="true" /> Open WhatsApp again</a>
+            <button type="button" onClick={() => setStatus('idle')} className="btn-outline">New enquiry</button>
+          </div>
         </motion.div>
       ) : (
         <motion.form key="form" onSubmit={onSubmit} noValidate initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-3">
@@ -134,20 +146,11 @@ export default function BookingForm({ defaultCategory = '', defaultPackage = '' 
           {/* Hidden field to catch spam bots */}
           <input type="text" name="website" value={v.website} onChange={set('website')} tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
 
-          {status === 'error' && (
-            <div className="flex gap-3 rounded-xl border border-red-800/30 bg-red-50 p-4 text-sm text-red-900" role="alert">
-              <AlertCircle size={18} className="mt-0.5 shrink-0" aria-hidden="true" />
-              <p><strong>Your enquiry was not sent.</strong> {serverMsg}</p>
-            </div>
-          )}
-
-          <div className="grid grid-cols-1 gap-3 pt-1 sm:grid-cols-2">
-            <button type="submit" className="btn-primary" disabled={status === 'sending'} aria-busy={status === 'sending'}>
-              {status === 'sending' ? <><Loader2 size={17} className="animate-spin" aria-hidden="true" /> Sending…</> : <><Send size={16} aria-hidden="true" /> Send Enquiry</>}
+          <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:items-center sm:gap-4">
+            <button type="submit" className="btn-primary sm:px-8">
+              <MessageCircle size={16} aria-hidden="true" /> Send on WhatsApp
             </button>
-            <a href={whatsappLink(waMessage)} target="_blank" rel="noopener noreferrer" className="btn-outline">
-              <MessageCircle size={16} aria-hidden="true" /> WhatsApp Us
-            </a>
+            <p className="text-xs text-charcoal-soft">Opens WhatsApp with your details filled in — just tap Send.</p>
           </div>
         </motion.form>
       )}
