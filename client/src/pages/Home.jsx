@@ -4,13 +4,15 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
 import { ArrowDown, ArrowRight } from 'lucide-react';
 import { Img, Reveal, RevealImage, TextReveal, useParallax } from '../components/Motion';
 import { BookingCTA, SectionHeading, Seo } from '../components/Common';
-import { Approach, FeaturedProjects, InstagramGallery, Packages, ServicesGrid, Testimonials } from '../components/Sections';
-import { MasonryGallery } from '../components/Gallery';
+import { BurstGrid, PhotoMarquee, StoryHighlights } from '../components/HomeMotion';
 import { album as a } from '../data/images';
 import { imgUrl } from '../lib/img';
-import { interleaved, portfolio } from '../data/content';
 
 const ease = [0.22, 1, 0.36, 1];
+
+// Nine of the studio's own photos for the burst grid, and a longer set for the sliding strips.
+const burst = [a.maroonWindow, a.blossomOne, a.windowLight2, a.pastelClose, a.redGarden, a.maroonCurtain, a.blossomThree, a.monoKiss, a.pastelLook];
+const strip = [a.brideMehendi, a.pastelStand, a.maroonSmile, a.blossomTwo, a.foreheadKiss, a.pastelFull, a.windowSoft, a.blossomFour, a.maroonClose, a.gardenWalk, a.pastelPortrait, a.windowHands, a.pastelTogether, a.maroonEmbrace, a.pastelWalk, a.windowLight];
 const INTERVAL = 5200;
 
 // Phone: one full-screen slideshow. Desktop: three columns, each with its own slideshow.
@@ -214,13 +216,13 @@ export default function Home() {
       {/* Introduction */}
       <section id="intro" className="section scroll-mt-20">
         <div className="container-lux grid items-center gap-12 lg:grid-cols-12 lg:gap-20">
-          <div className="relative mx-auto w-full max-w-[340px] sm:max-w-md lg:col-span-6 lg:max-w-none">
+          <div className="relative mx-auto w-full max-w-[280px] sm:max-w-sm lg:col-span-5 lg:max-w-[380px]">
             <RevealImage image={a.windowHands} aspect="aspect-[4/5]" sizes="(min-width:1024px) 45vw, 340px" />
             <div className="absolute -bottom-8 -right-6 w-28 sm:w-40 lg:-right-10 lg:w-52">
               <RevealImage image={a.brideMehendi} aspect="aspect-[4/5]" direction="left" className="border-[5px] border-warm" sizes="200px" />
             </div>
           </div>
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-7">
             <Reveal><p className="eyebrow mb-4">About the studio</p></Reveal>
             <TextReveal text="More Than Just Photographs." className="h2" />
             <Reveal delay={0.1}>
@@ -233,66 +235,24 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Services */}
+      {/* Services as story circles */}
+      <section className="pb-16 sm:pb-24">
+        <div className="container-lux">
+          <SectionHeading align="center" eyebrow="What we photograph" title="Stories We Love to Capture." className="mb-8 sm:mb-10" />
+          <StoryHighlights />
+        </div>
+      </section>
+
+      {/* Portfolio: the photos gather, burst apart and settle into a grid */}
+      <BurstGrid images={burst} />
+
+      {/* Endless sliding strips */}
       <section className="section bg-cream/70">
-        <div className="container-lux">
-          <div className="mb-10 flex items-end justify-between gap-6 sm:mb-14">
-            <SectionHeading eyebrow="What we photograph" title="Stories We Love to Capture." />
-            <Reveal className="hidden sm:block"><Link to="/services" className="link-underline shrink-0">All services <ArrowRight size={16} aria-hidden="true" /></Link></Reveal>
-          </div>
-          <ServicesGrid />
+        <div className="container-lux mb-10 flex flex-wrap items-end justify-between gap-4">
+          <SectionHeading eyebrow="Instagram" title="Follow Our Stories." />
+          <Reveal><Link to="/portfolio" className="link-underline">See every story <ArrowRight size={16} aria-hidden="true" /></Link></Reveal>
         </div>
-      </section>
-
-      {/* Portfolio */}
-      <section className="section">
-        <div className="container-lux">
-          <SectionHeading align="center" eyebrow="Portfolio" title="A Glimpse Into Our World." className="mb-10 sm:mb-14" />
-          <MasonryGallery items={interleaved(portfolio).slice(0, 12)} />
-          <Reveal className="mt-10 text-center sm:mt-14">
-            <Link to="/portfolio" className="btn-primary">View Full Portfolio <ArrowRight size={16} aria-hidden="true" /></Link>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Approach */}
-      <section className="section bg-sage/40">
-        <div className="container-lux">
-          <SectionHeading align="center" eyebrow="Our approach" title="The Art Behind Every Frame." className="mb-10 sm:mb-14" />
-          <Approach />
-        </div>
-      </section>
-
-      {/* Featured projects */}
-      <section className="section">
-        <div className="container-lux">
-          <SectionHeading eyebrow="Featured stories" title="Recent Shoots." className="mb-12 sm:mb-16" />
-          <FeaturedProjects />
-        </div>
-      </section>
-
-      {/* Packages */}
-      <section className="section bg-butter/45">
-        <div className="container-lux">
-          <SectionHeading align="center" eyebrow="Packages" title="Find the Perfect Experience." className="mb-10 sm:mb-14" />
-          <Packages />
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section className="section">
-        <div className="container-lux">
-          <SectionHeading eyebrow="Testimonials" title="Kind Words From Our Clients." className="mb-10 sm:mb-14" />
-          <Testimonials />
-        </div>
-      </section>
-
-      {/* Instagram */}
-      <section className="section bg-cream/70">
-        <div className="container-lux">
-          <SectionHeading align="center" eyebrow="Instagram" title="Follow Our Stories." className="mb-10" />
-          <InstagramGallery />
-        </div>
+        <PhotoMarquee images={strip} />
       </section>
 
       <BookingCTA />
