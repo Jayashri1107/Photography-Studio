@@ -34,10 +34,16 @@ birthday & events, fashion & commercial) · Services & Packages · Contact / Boo
 | --- | --- |
 | Studio name, phone, email, address, Instagram, Facebook | `client/src/data/site.js` |
 | WhatsApp number | `VITE_WHATSAPP_NUMBER` in `client/.env` |
-| All photos (one library) | `client/src/data/images.js` |
+| All photos (one library) | `client/src/data/images.js`; the files are in `client/public/photos/` |
 | Photography categories and their page text | `client/src/data/categories.js` |
 | Featured stories, packages, testimonials, FAQ, Instagram grid | `client/src/data/content.js` |
 | Colours and fonts | `client/tailwind.config.js` |
+
+### Photos are stored in the project
+
+Every photo is saved in `client/public/photos/` in three widths (480, 960, 1280 px, WebP), so the site does not
+depend on the Google Photos album or Unsplash. To add a photo: add it to `client/src/data/images.js` (Google Photos
+link or Unsplash id), then in the `client` folder run `node scripts/download-photos.mjs` and commit the new files.
 
 ### Placeholders still to replace
 

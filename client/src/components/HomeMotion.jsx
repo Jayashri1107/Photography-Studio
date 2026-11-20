@@ -47,14 +47,14 @@ export function PhotoRing({ images }) {
   const reduce = useReducedMotion();
   const n = images.length;
   return (
-    <section className="overflow-hidden pb-16 pt-6 sm:pb-20">
+    <section className="overflow-hidden pb-10 pt-6 sm:pb-20">
       <div className="container-lux text-center">
         <Reveal><p className="eyebrow">Portfolio</p></Reveal>
         <Reveal delay={0.05}><h2 className="mt-3 font-serif text-[2.1rem] sm:text-5xl">A Glimpse Into Our World.</h2></Reveal>
         <Reveal delay={0.1}><p className="mt-3 text-sm text-charcoal-soft">Hover to pause · tap a photo to see the full portfolio</p></Reveal>
       </div>
       <motion.div
-        className="ring-stage relative mx-auto mt-2 h-[250px] sm:mt-4 sm:h-[330px]"
+        className="ring-stage relative mx-auto mt-2 h-[220px] sm:mt-4 sm:h-[330px]"
         initial={reduce ? false : { opacity: 0, scale: 0.7, rotateX: 25 }}
         whileInView={{ opacity: 1, scale: 1, rotateX: 0 }}
         viewport={{ once: true, margin: '-60px' }}
@@ -81,7 +81,7 @@ export function PhotoRing({ images }) {
           </div>
         </div>
       </motion.div>
-      <Reveal className="mt-8 flex flex-wrap justify-center gap-3 sm:mt-12">
+      <Reveal className="mt-5 flex flex-wrap justify-center gap-3 sm:mt-12">
         <Link to="/portfolio" className="btn-primary">View Full Portfolio</Link>
         <a href={site.instagram} target="_blank" rel="noopener noreferrer" className="btn-outline">
           <Instagram size={16} aria-hidden="true" /> {site.instagramHandle}
@@ -121,7 +121,7 @@ export function PhotoMarquee({ images }) {
       transition={{ duration: 1, ease }}
     >
       <Strip images={images.slice(0, half)} />
-      <Strip images={images.slice(half)} reverse duration={55} />
+      <div className="hidden sm:block"><Strip images={images.slice(half)} reverse duration={55} /></div>
     </motion.div>
   );
 }

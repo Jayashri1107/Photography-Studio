@@ -214,9 +214,9 @@ export default function Home() {
       {desktop ? <DesktopHero /> : <MobileHero />}
 
       {/* Introduction */}
-      <section id="intro" className="scroll-mt-20 pb-12 pt-16 sm:pb-16 sm:pt-24 lg:pt-28">
+      <section id="intro" className="scroll-mt-20 pb-10 pt-12 sm:pb-16 sm:pt-24 lg:pt-28">
         <div className="container-lux grid items-center gap-12 lg:grid-cols-12 lg:gap-20">
-          <div className="relative mx-auto w-full max-w-[280px] sm:max-w-sm lg:col-span-5 lg:max-w-[380px]">
+          <div className="relative mx-auto hidden w-full max-w-[280px] sm:block sm:max-w-sm lg:col-span-5 lg:max-w-[380px]">
             <RevealImage image={a.windowHands} aspect="aspect-[4/5]" sizes="(min-width:1024px) 45vw, 340px" />
             <div className="absolute -bottom-8 -right-6 w-28 sm:w-40 lg:-right-10 lg:w-52">
               <RevealImage image={a.brideMehendi} aspect="aspect-[4/5]" direction="left" className="border-[5px] border-warm" sizes="200px" />
@@ -247,8 +247,8 @@ export default function Home() {
       <PhotoRing images={ringPhotos} />
 
       {/* Endless sliding strips */}
-      <section className="section bg-cream/70">
-        <div className="container-lux mb-10 flex flex-wrap items-end justify-between gap-4">
+      <section className="bg-cream/70 py-10 sm:py-20 lg:py-24">
+        <div className="container-lux mb-6 flex flex-wrap items-end justify-between gap-4 sm:mb-10">
           <SectionHeading eyebrow="Instagram" title="Follow Our Stories." />
           <Reveal><Link to="/portfolio" className="link-underline">See every story <ArrowRight size={16} aria-hidden="true" /></Link></Reveal>
         </div>

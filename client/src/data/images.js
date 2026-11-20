@@ -109,3 +109,10 @@ export const images = {
   cameraHands: I('photo-1609085178848-b2de5927eda7', 'Photographer’s hands holding a DSLR camera', 'wide', 'tall'),
   photographerField: I('photo-1565689477829-14d5871f5bda', 'Photographer holding a DSLR camera outdoors', 'tall'),
 };
+
+// Every photo is saved in the project (public/photos/<group>-<key>-<width>.webp, made by
+// scripts/download-photos.mjs). `local` tells the site to use that copy instead of the online link.
+// New photo: add it above, run `node scripts/download-photos.mjs` in the client folder, and commit the new files.
+for (const [group, set] of [['album', album], ['stock', images]]) {
+  for (const [key, img] of Object.entries(set)) img.local = `${group}-${key}`;
+}

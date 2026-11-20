@@ -220,47 +220,48 @@ export function BackToTop() {
 export function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="bg-sage/45 pt-14 text-charcoal sm:pt-20">
-      <div className="container-lux grid grid-cols-2 gap-x-6 gap-y-10 pb-12 sm:pb-16 lg:grid-cols-[1.4fr_1fr_1.2fr_1.3fr] lg:gap-12">
-        <div className="col-span-2 lg:col-span-1">
+    <footer className="bg-sage/45 pt-8 text-charcoal sm:pt-20">
+      <div className="container-lux grid grid-cols-2 gap-x-6 gap-y-6 pb-6 sm:gap-y-10 sm:pb-16 lg:grid-cols-[1.4fr_1fr_1.2fr_1.3fr] lg:gap-12">
+        {/* phones: logo and social buttons on one line, no intro sentence */}
+        <div className="col-span-2 flex items-center justify-between gap-4 lg:col-span-1 lg:block">
           <Logo />
-          <p className="mt-5 max-w-xs text-[0.95rem] leading-relaxed text-charcoal-soft">{site.intro}</p>
-          <div className="mt-6 flex gap-3">
-            <a href={site.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="grid h-11 w-11 place-items-center rounded-full border border-olive/30 text-olive transition hover:bg-olive hover:text-warm">
+          <p className="mt-5 hidden max-w-xs text-[0.95rem] leading-relaxed text-charcoal-soft sm:block">{site.intro}</p>
+          <div className="flex gap-2 sm:gap-3 lg:mt-6">
+            <a href={site.instagram} target="_blank" rel="noopener noreferrer" aria-label="Instagram" className="grid h-10 w-10 place-items-center rounded-full border border-olive/30 text-olive transition hover:bg-olive hover:text-warm sm:h-11 sm:w-11">
               <Instagram size={18} />
             </a>
             {site.facebook && (
-              <a href={site.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="grid h-11 w-11 place-items-center rounded-full border border-olive/30 text-olive transition hover:bg-olive hover:text-warm">
+              <a href={site.facebook} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="grid h-10 w-10 place-items-center rounded-full border border-olive/30 text-olive transition hover:bg-olive hover:text-warm sm:h-11 sm:w-11">
                 <Facebook size={18} />
               </a>
             )}
-            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="grid h-11 w-11 place-items-center rounded-full border border-olive/30 text-olive transition hover:bg-olive hover:text-warm">
+            <a href={whatsappLink()} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="grid h-10 w-10 place-items-center rounded-full border border-olive/30 text-olive transition hover:bg-olive hover:text-warm sm:h-11 sm:w-11">
               <MessageCircle size={18} />
             </a>
           </div>
         </div>
         <div>
-          <h2 className="eyebrow mb-5 font-sans">Explore</h2>
-          <ul className="space-y-3 text-[0.95rem]">
+          <h2 className="eyebrow mb-2.5 font-sans sm:mb-5">Explore</h2>
+          <ul className="space-y-1.5 text-sm sm:space-y-3 sm:text-[0.95rem]">
             {[...mainNav, { label: 'FAQ', to: '/faq' }].map((l) => (
               <li key={l.to}><Link to={l.to} className="transition-colors hover:text-olive">{l.label}</Link></li>
             ))}
           </ul>
         </div>
         <div>
-          <h2 className="eyebrow mb-5 font-sans">Photography</h2>
-          <ul className="space-y-3 text-[0.95rem]">
+          <h2 className="eyebrow mb-2.5 font-sans sm:mb-5">Photography</h2>
+          <ul className="space-y-1.5 text-sm sm:space-y-3 sm:text-[0.95rem]">
             {categories.map((c) => (
               <li key={c.slug}><Link to={c.path} className="transition-colors hover:text-olive">{c.short}</Link></li>
             ))}
           </ul>
         </div>
         <div className="col-span-2 lg:col-span-1">
-          <h2 className="eyebrow mb-5 font-sans">Visit & Contact</h2>
-          <ul className="space-y-4 text-[0.95rem]">
+          <h2 className="eyebrow mb-2.5 font-sans sm:mb-5">Visit & Contact</h2>
+          <ul className="space-y-2 text-sm sm:space-y-4 sm:text-[0.95rem]">
             <li className="flex gap-3">
               <Phone size={18} className="mt-1 shrink-0 text-olive" aria-hidden="true" />
-              <span className="flex flex-col">
+              <span className="flex flex-wrap gap-x-3 sm:flex-col">
                 {site.phones.map((p) => <a key={p.href} href={p.href} className="hover:text-olive">+91 {p.label}</a>)}
               </span>
             </li>
@@ -272,7 +273,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-charcoal/10">
-        <div className="container-lux flex flex-col items-center justify-between gap-2 py-6 text-sm text-charcoal-soft sm:flex-row">
+        <div className="container-lux flex flex-col items-center justify-between gap-1 py-4 text-xs text-charcoal-soft sm:flex-row sm:gap-2 sm:py-6 sm:text-sm">
           <p>© {year} {site.name}. All rights reserved.</p>
           <p>Chhatrapati Sambhajinagar, Maharashtra</p>
         </div>
