@@ -214,7 +214,7 @@ export default function Home() {
       {desktop ? <DesktopHero /> : <MobileHero />}
 
       {/* Introduction */}
-      <section id="intro" className="section scroll-mt-20">
+      <section id="intro" className="scroll-mt-20 pb-12 pt-16 sm:pb-16 sm:pt-24 lg:pt-28">
         <div className="container-lux grid items-center gap-12 lg:grid-cols-12 lg:gap-20">
           <div className="relative mx-auto w-full max-w-[280px] sm:max-w-sm lg:col-span-5 lg:max-w-[380px]">
             <RevealImage image={a.windowHands} aspect="aspect-[4/5]" sizes="(min-width:1024px) 45vw, 340px" />
@@ -236,7 +236,7 @@ export default function Home() {
       </section>
 
       {/* Services as story circles */}
-      <section className="pb-16 sm:pb-24">
+      <section className="pb-8 sm:pb-10">
         <div className="container-lux">
           <SectionHeading align="center" eyebrow="What we photograph" title="Stories We Love to Capture." className="mb-8 sm:mb-10" />
           <StoryHighlights />

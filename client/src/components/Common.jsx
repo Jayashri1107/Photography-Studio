@@ -89,7 +89,7 @@ export function PageHero({ eyebrow, title, text, image, children, compact = fals
 /** Full-width booking call to action with parallax photography. */
 export function BookingCTA({ image = album.windowLight2 }) {
   return (
-    <section className="relative isolate overflow-hidden py-24 sm:py-40">
+    <section className="relative isolate overflow-hidden py-20 sm:py-28">
       <ParallaxImage image={image} strength={12} />
       <div className="absolute inset-0 bg-charcoal/55" />
       <div className="container-lux relative text-center">
