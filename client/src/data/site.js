@@ -3,7 +3,7 @@ const wa = import.meta.env.VITE_WHATSAPP_NUMBER || '917038096447';
 
 export const site = {
   name: 'Rupak Camatography',
-  logo: '/logo.png',
+  logo: `${import.meta.env.BASE_URL}logo.png`,
   tagline: 'Every Frame Tells Your Story.',
   intro: 'Timeless wedding and portrait photography, made with warmth.',
   phones: [

@@ -16,6 +16,12 @@ A multi-page, premium photography studio website.
 
 Production: `npm run build`, then `npm start` — the API also serves the built website from `client/dist`.
 
+## Live website (GitHub Pages)
+
+Every push to `main` rebuilds the site and publishes it at https://jayashri1107.github.io/Photography-Studio/
+(`.github/workflows/pages.yml`). One-time setup: repository Settings → Pages → Source: **GitHub Actions**.
+The Pages version has no server: the booking form goes to WhatsApp only. Free for a public repository, no time limit.
+
 ## Pages
 
 Home · About · Portfolio · 7 photography pages (wedding, pre-wedding, portrait, maternity, baby & newborn,

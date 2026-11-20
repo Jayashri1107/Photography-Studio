@@ -86,7 +86,8 @@ export default function BookingForm({ defaultCategory = '', defaultPackage = '' 
     if (!win) window.location.href = link;
 
     // Backup copy in the studio's database when the server is running; WhatsApp works without it.
-    fetch('/api/enquiries', {
+    // The GitHub Pages build has no server (VITE_NO_API=1), so it skips this.
+    if (!import.meta.env.VITE_NO_API) fetch('/api/enquiries', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(v),
